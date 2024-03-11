@@ -1,11 +1,27 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const mongoose = require('mongoose');
+const express = require("express");
+const mongoose = require("mongoose");
 
-// Connection to MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log('MongoDB connected'))
-.catch(err => console.error('MongoDB connection error:', err));
+const user = require("./routes/userRoute");
+
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+mongoose
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    app.listen(process.env.PORT, () => {
+      console.log("MongoDB connected");
+    });
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+
+app.use("/api/user", user);
