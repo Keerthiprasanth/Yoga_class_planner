@@ -21,7 +21,6 @@ router.post("/register", async (req, res) => {
       password: hashedPassword,
       phone: req.body.phone,
       age: req.body.age,
-      userRole: req.body.userRole,
     });
 
     await newUser.save();
@@ -46,11 +45,11 @@ router.post("/login", async (req, res) => {
     if (!isPasswordValid) {
       return res.status(400).json({ message: "Invalid password" });
     }
-
     const token = jwt.sign({ userId: user._id }, process.env.SECRET, {
       expiresIn: "1h",
     });
 
+    
     res.status(200).json({ token });
   } catch (error) {
     res.status(400).json({ error: error.message });
