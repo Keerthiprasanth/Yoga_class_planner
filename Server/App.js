@@ -3,7 +3,8 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 
-const user = require("./routes/userRoute");
+const student = require("./routes/studentRoute");
+const teacher = require("./routes/teacherRoute");
 
 const app = express();
 
@@ -24,4 +25,5 @@ mongoose
     console.log(error);
   });
 
-app.use("/api/user", user);
+app.use("/api/student", student);
+app.use("/api/teacher", teacher);

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
+const teacherSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -23,12 +23,12 @@ const userSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  userRole: {
+  experience: {
     type: String,
-    enum: ["staff", "student", "admin", "volunteer"],
+    enum: ["beginner", "intermediate", "advanced", "expert"],
   },
 });
 
-const User = mongoose.model("User", userSchema);
+const Teacher = mongoose.model("Teacher", teacherSchema);
 
-module.exports = User;
+module.exports = Teacher;

@@ -3,30 +3,29 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const User = require("../models/userModel");
+const Student = require("../models/StudentModel");
 
 router.post("/register", async (req, res) => {
   console.log("Request Body:", req.body);
   try {
-    const existingUser = await User.findOne({ email: req.body.email });
-    if (existingUser) {
+    const existingStudent = await Student.findOne({ email: req.body.email });
+    if (existingStudent) {
       return res.status(400).json({ message: "Email already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-    const newUser = new User({
+    const newStudent = new Student({
       name: req.body.name,
       email: req.body.email,
       password: hashedPassword,
       phone: req.body.phone,
       age: req.body.age,
-      userRole: req.body.userRole,
     });
 
-    await newUser.save();
+    await newStudent.save();
 
-    res.status(200).json({ message: "User registered successfully" });
+    res.status(200).json({ message: "Student registered successfully" });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -34,20 +33,20 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
-    const user = await User.findOne({ email: req.body.email });
-    if (!user) {
+    const Student = await Student.findOne({ email: req.body.email });
+    if (!Student) {
       return res.status(400).json({ message: "User does not exist" });
     }
 
     const isPasswordValid = await bcrypt.compare(
       req.body.password,
-      user.password
+      Student.password
     );
     if (!isPasswordValid) {
       return res.status(400).json({ message: "Invalid password" });
     }
 
-    const token = jwt.sign({ userId: user._id }, process.env.SECRET, {
+    const token = jwt.sign({ StudentId: Student._id }, process.env.SECRET, {
       expiresIn: "1h",
     });
 
