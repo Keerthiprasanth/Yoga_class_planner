@@ -24,6 +24,9 @@ mongoose
   .catch((error) => {
     console.log(error);
   });
+  app.listen(3001,()=>{
+    console.log("server is runing")
+  })
 
 app.use("/api/student", student);
 app.use("/api/teacher", teacher);
