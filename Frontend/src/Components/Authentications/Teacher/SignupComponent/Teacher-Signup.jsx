@@ -1,6 +1,6 @@
 import React , {useState}from "react";
 import "./Teacher-Signup.css"
-
+import axios from 'axios';
 
 const TeacherSignup =() =>{
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -54,9 +54,24 @@ const TeacherSignup =() =>{
     }
 
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();   
     console.log(formData)
+    try{
+      const response = await axios.post('/api/user/register', formData);
+      console.log("Response " ,response.data);
+      setFormData({
+        name: '',
+        email: '',
+        password: '',
+        phone: '',
+        age: '',
+        experienceLevel: '',
+      })
+      
+    }catch (error){
+      console.error("Error " , error);
+    }
   }
 
   return(
