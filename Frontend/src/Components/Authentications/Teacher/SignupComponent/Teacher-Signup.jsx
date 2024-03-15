@@ -58,7 +58,7 @@ const TeacherSignup =() =>{
     e.preventDefault();   
     console.log(formData)
     try{
-      const response = await axios.post('/api/user/register', formData);
+      const response = await axios.post('http://localhost:3001/api/student/register', formData);
       console.log("Response " ,response.data);
       setFormData({
         name: '',
