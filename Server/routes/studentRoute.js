@@ -19,8 +19,7 @@ router.post("/register", async (req, res) => {
       name: req.body.name,
       email: req.body.email,
       password: hashedPassword,
-      phone: req.body.phone,
-      age: req.body.age,
+      birthDate: req.body.birthDate,
     });
 
     await newStudent.save();

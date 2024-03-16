@@ -14,13 +14,8 @@ const teacherSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  phone: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  age: {
-    type: Number,
+  birthDate: {
+    type: Date,
     required: true,
   },
   experience: {
