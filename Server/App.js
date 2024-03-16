@@ -5,9 +5,9 @@ const mongoose = require("mongoose");
 
 const student = require("./routes/studentRoute");
 const teacher = require("./routes/teacherRoute");
-
+const cors = require('cors')
 const app = express();
-
+app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
