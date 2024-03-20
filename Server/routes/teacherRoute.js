@@ -33,8 +33,8 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
-    const Teacher = await Teacher.findOne({ email: req.body.email });
-    if (!Teacher) {
+    const existingTeacher = await Teacher.findOne({ email: req.body.email });
+    if (!existingTeacher) {
       return res.status(400).json({ message: "User does not exist" });
     }
 
