@@ -19,7 +19,7 @@ mongoose.connect(process.env.MONGO_URI, {
 })
 .then(() => {
   app.listen(process.env.PORT, () => {
-    console.log("MongoDB connected ${process.env.PORT}`");
+    console.log("MongoDB connected and listening at ", process.env.PORT);
   });
 })
 .catch(err => console.error('MongoDB connection error:', err));
