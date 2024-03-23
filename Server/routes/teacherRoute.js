@@ -57,6 +57,19 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/profile", authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.TeacherId;
+    const user = await Teacher.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
 
 router.put("/update", authenticateToken, async (req, res) => {
   try {
@@ -93,6 +106,23 @@ router.put("/update", authenticateToken, async (req, res) => {
     } else {
       res.status(400).json({ message: "No fields provided for updating" });
     }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+router.delete("/delete-profile", authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.TeacherId;
+
+    const user = await Teacher.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    await Teacher.findByIdAndDelete(userId);
+
+    res.status(200).json({ message: "User profile deleted successfully" });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

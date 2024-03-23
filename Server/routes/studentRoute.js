@@ -46,12 +46,29 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid password" });
     }
 
-    const token = jwt.sign({ StudentId: existingStudent._id }, process.env.SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { StudentId: existingStudent._id },
+      process.env.SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
 
-    
     res.status(200).json({ token });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+router.get("/profile", authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.StudentId;
+    const user = await Student.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -97,5 +114,21 @@ router.put("/update", authenticateToken, async (req, res) => {
   }
 });
 
+router.delete("/delete-profile", authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.StudentId;
+
+    const user = await Student.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    await Student.findByIdAndDelete(userId);
+
+    res.status(200).json({ message: "User profile deleted successfully" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
 
 module.exports = router;
