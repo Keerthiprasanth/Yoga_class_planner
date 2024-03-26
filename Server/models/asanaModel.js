@@ -3,11 +3,11 @@ const mongoose = require("mongoose");
 const asanaSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    // required: true,
   },
   description: {
     type: String,
-    required: true,
+    // required: true,
   },
   benefits: {
     type: [String],
@@ -15,12 +15,20 @@ const asanaSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    required: true,
+    // required: true,
   },
   sequence: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Asana'
   }],
+  addedByName: {
+    type: String,
+    required: true,
+  },
+  addedById: {
+    type: String,
+    required: true,
+  }
 });
 
 const Asana = mongoose.model("Asana", asanaSchema);

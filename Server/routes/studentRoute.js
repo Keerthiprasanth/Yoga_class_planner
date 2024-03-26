@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const Student = require("../models/StudentModel");
+const Student = require("../models/studentModel");
 const authenticateToken = require("../Middleware/authRequest");
 
 router.post("/register", async (req, res) => {
