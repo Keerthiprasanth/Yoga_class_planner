@@ -22,7 +22,7 @@ router.post("/register", async (req, res) => {
       password: hashedPassword,
       birthDate: req.body.birthDate,
     });
-
+    
     await newStudent.save();
 
     res.status(200).json({ message: "Student registered successfully" });

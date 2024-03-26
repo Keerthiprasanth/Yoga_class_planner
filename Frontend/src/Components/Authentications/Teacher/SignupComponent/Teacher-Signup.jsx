@@ -1,8 +1,10 @@
 import React , {useState}from "react";
 import "./Teacher-Signup.css"
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const TeacherSignup =() =>{
+  const navigate = useNavigate();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
 
@@ -11,7 +13,7 @@ const TeacherSignup =() =>{
     email: '',
     password: '',
     phone: '',
-    age: '',
+    dob: '',
     experienceLevel: '',
   });
   const [form,setForm] = useState({
@@ -26,7 +28,10 @@ const TeacherSignup =() =>{
   
   const handleChange = (e) => {
     const { name, value } = e.target;
-
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
     let error = '';
     if (name === 'email' && !emailRegex.test(value)) {
       error = 'Invalid email address';
@@ -64,14 +69,15 @@ const TeacherSignup =() =>{
         name: '',
         email: '',
         password: '',
-        phone: '',
-        age: '',
+        birthDate: '',
         experienceLevel: '',
-      })
       
+      })
+      navigate("/dashboard");
     }catch (error){
       console.error("Error " , error);
     }
+
   }
 
   return(
@@ -88,8 +94,10 @@ const TeacherSignup =() =>{
         <div className="error">{errors.password}</div>
         <input className="text" name="confirmPassword" value={form.confirmPassword} onChange={handleChange} placeholder="Confirm Password" required></input>
         <div className="error">{errors.confirmPassword}</div>
-        <input type="number" name="phone" value={formData.phone} onChange={handleChange} placeholder="Phone number" required></input>
-        <input type="number" name="age" value={formData.age} onChange={handleChange} placeholder="Age" required></input>
+         <input type="date" name="birthDate" value={formData.age} onChange={handleChange} placeholder="DOB" required  min="1960-01-01" max=""></input>
+       
+
+
         <select id="cars" name="cars" onChange={handleChange}>
         <option value="">Select Experience Level</option>
         <option value="beginner">Beginner</option>

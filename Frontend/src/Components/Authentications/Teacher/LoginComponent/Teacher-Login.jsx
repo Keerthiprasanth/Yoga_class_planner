@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 const Login =() =>{
+    const navigate = useNavigate();
     const [formData , setformData] = useState({
       email:'',
       password:'',
@@ -11,9 +14,33 @@ const Login =() =>{
         [name]: value,
       }));
     };
-    const handleSubmit = (e) =>{
+    const handleSubmit = async (e) =>{
       e.preventDefault();
       console.log(formData);
+      try {
+        const response = await axios.post('http://localhost:3001/api/teacher/login', formData);
+        console.log("Response: ", response.data);
+      
+        setformData({
+          email: '',
+          password: '',
+        });
+        const token = response.data.token; 
+        sessionStorage.setItem('token', token);
+        const profileResponse = await axios.get('http://localhost:3001/api/teacher/profile', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        const username = profileResponse.data.name;
+        sessionStorage.setItem('user', JSON.stringify(username));
+        console.log("username", username);
+        navigate("/dashboard");
+      } catch (error) {
+        console.error("Login Error: ", error);
+        alert("Invalid email or password");
+      }
     }
   
     return(
