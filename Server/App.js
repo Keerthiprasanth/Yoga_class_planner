@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 
 const student = require("./routes/studentRoute");
 const teacher = require("./routes/teacherRoute");
+const asana = require("./routes/asanaRoute")
 
 const cors = require('cors')
 const app = express();
@@ -19,10 +20,12 @@ mongoose.connect(process.env.MONGO_URI, {
 })
 .then(() => {
   app.listen(process.env.PORT, () => {
-    console.log("MongoDB connected ${process.env.PORT}`");
+    console.log("MongoDB connected and listening at ", process.env.PORT);
   });
 })
 .catch(err => console.error('MongoDB connection error:', err));
 
+app.set("view engine", "ejs");
 app.use("/api/student", student);
 app.use("/api/teacher", teacher);
+app.use("/api/asana", asana);

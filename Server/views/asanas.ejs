@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<body>
+    <ul>
+        <% asanas.forEach(function(asana) { %>
+            <li>Name: <%= asana.name %></li>
+            <li>Description: <%= asana.description %></li>
+            <li>Benefits: <%= asana.benefits %></li>
+            <li>Image: <img src="<%= asana.image %>"></li>
+            <li>Added By: <%= asana.addedByName %></li>
+            <hr>
+        <% }); %>
+    </ul>
+</body>
+</html>

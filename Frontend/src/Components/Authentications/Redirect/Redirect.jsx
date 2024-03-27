@@ -1,12 +1,14 @@
 import React from 'react';
 import './Redirect.css';
+import styles from './Redirect.css'; 
 
 const Redirect = () => {
   return (
+
     <div className="container col-12">
      <div className="side-a col-6 row">
       <div className="box">
-      <a href="/teacher-signup">Login as Teacher</a>
+      <a href="/teacher-login">Login as Teacher</a>
       </div>
   
       <div className="box">
@@ -20,6 +22,7 @@ const Redirect = () => {
         </div>
     </div>
     </div>
+ 
   );
 };
 
