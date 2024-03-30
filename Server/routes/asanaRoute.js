@@ -47,6 +47,7 @@ router.post(
         description: req.body.description,
         benefits: req.body.benefits,
         image: req.file.filename,
+        asanaType: req.body.asanaType,
         addedByName: user.name,
         addedById: userId,
       });
@@ -95,6 +96,9 @@ router.put(
       }
       if (req.file) {
         asana.image = req.file.filename;
+      }
+      if (req.body.asanaType){
+        asana.asanaType = req.body.asanaType;
       }
 
       asana = await asana.save();

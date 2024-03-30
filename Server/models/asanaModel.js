@@ -17,6 +17,10 @@ const asanaSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  asanaType: {
+    type: String,
+    enum: ["Full body", "Back"]
+  },
   addedByName: {
     type: String,
     required: true,
