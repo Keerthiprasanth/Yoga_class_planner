@@ -1,13 +1,10 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import $ from 'jquery'; // Import jQuery
-import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Import Bootstrap JavaScript bundle
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
 
 const Header = () => {
-    const [user, setUser] = useState(null);
-  const handleDropdownToggle = () => {
-    $('.dropdown-toggle').dropdown('toggle');
-  };
+  const [user, setUser] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     const storedUser = sessionStorage.getItem('user');
@@ -15,18 +12,23 @@ const Header = () => {
     if (storedUser) {
       try {
         const parsedUser = JSON.parse(storedUser);
-        setUser(parsedUser);
+        setUser(parsedUser); // Set the user state with the retrieved user information
       } catch (error) {
         console.error('Error parsing user:', error);
       }
     }
   }, []);
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
 
   return (
     <div className="header">
       <nav className="navbar navbar-expand-md navbar-light bg-light">
-        <a className="navbar-brand" href="#">Yoga planner</a>
-        
+        <a className="navbar-brand" href="#">Yoga Planner</a>
         <button 
           className="navbar-toggler" 
           type="button" 
@@ -35,34 +37,34 @@ const Header = () => {
           aria-controls="navbarSupportedContent" 
           aria-expanded="false" 
           aria-label="Toggle navigation"
-          onClick={handleDropdownToggle} // Toggle dropdown when clicking the toggler button
+          onClick={toggleDropdown} // Toggle dropdown when clicking the toggler button
         >
           <span className="navbar-toggler-icon"></span>
         </button>
         
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+        <div className={`collapse navbar-collapse ${dropdownOpen ? 'show' : ''}`} id="navbarSupportedContent">
           <ul className="navbar-nav ml-auto py-4 py-md-0">
             <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-              <a className="nav-link" href="#">Forms</a>
+              <a className="nav-link" href="#">Student List</a>
             </li>
             <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
               <a className="nav-link" href="#">Sessions</a>
             </li>
             <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4 dropdown">
+            <div className="btn-group">
               <a 
                 className="nav-link dropdown-toggle" 
                 href="#" 
                 role="button" 
-                data-toggle="dropdown"
+                onClick={toggleDropdown}
                 aria-haspopup="true" 
-                aria-expanded="false"
+                aria-expanded={dropdownOpen}
               >
-                Profile
+                <span className='col-5'>{user?capitalizeFirstLetter(user) : 'Profile'}</span>
               </a>
-             <div className="dropdown-menu dropdown-menu-left">
-  {user ? `Welcome, ${user.name}` : 'Profile'}
-</div>
-
+              <div className={`dropdown-menu col-5  ${dropdownOpen ? 'show' : ''}`}>
+              </div>
+              </div>
             </li>
           </ul>
         </div>

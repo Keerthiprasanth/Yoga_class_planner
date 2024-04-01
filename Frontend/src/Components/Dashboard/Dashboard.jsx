@@ -1,6 +1,7 @@
 import { useState } from "react";
 import HeaderComponent from "./Header/Header";
 import HomeComponent from "./Home/Home";
+import ViewAsanasComponent from "./View-Asanas/ViewAsanas";
 
 const Dashboard = () => {
 
@@ -12,6 +13,7 @@ const Dashboard = () => {
       <div> 
         <HomeComponent />
       </div>
+      <div><ViewAsanasComponent></ViewAsanasComponent></div>
     </div>
   );
 }

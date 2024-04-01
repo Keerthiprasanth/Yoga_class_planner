@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const asanaSchema = new mongoose.Schema({
+const sequenceSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -13,14 +13,10 @@ const asanaSchema = new mongoose.Schema({
     type: [String],
     required: true,
   },
-  image: {
-    type: String,
-    required: true,
-  },
-  asanaType: {
-    type: String,
-    enum: ["Full body", "Back"]
-  },
+  asanas: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Asana'
+  }],
   addedByName: {
     type: String,
     required: true,
@@ -31,6 +27,6 @@ const asanaSchema = new mongoose.Schema({
   }
 });
 
-const Asana = mongoose.model("Asana", asanaSchema);
+const Sequence = mongoose.model("Sequence", sequenceSchema);
 
-module.exports = Asana;
+module.exports = Sequence;

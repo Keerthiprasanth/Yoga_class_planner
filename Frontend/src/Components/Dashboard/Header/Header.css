@@ -2,9 +2,13 @@
     background-color: red;
 
 }
-.header{
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     box-shadow: 21px 21px 21px;
-
+    z-index: 1000; /* Ensure the header stays on top of other content */
 }
 
 .navigation-wrap{
@@ -96,4 +100,24 @@
 .nav-item{
 	position: relative;
     transition: all 200ms linear;
+}
+.dropdown-menu {
+    left: 10px;
+    position: absolute;
+    top: 100%;
+    left: -83px !important;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 10rem;
+    padding: .5rem 0;
+    margin: .125rem 0 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: .25rem;
 }
