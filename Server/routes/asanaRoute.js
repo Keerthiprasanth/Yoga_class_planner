@@ -65,7 +65,7 @@ router.get("/view-asanas", async (req, res) => {
   try {
     const asanas = await Asana.find();
 
-    res.render("asanas", { asanas: asanas });
+    res.status(200).json({ asanas });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
