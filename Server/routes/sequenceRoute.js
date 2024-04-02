@@ -50,7 +50,7 @@ router.get("/view-sequences", async (req, res) => {
   try {
     const sequences = await Sequence.find().populate('asanas');
 
-    res.render("sequences", { sequences: sequences });
+    res.status(200).json({ sequences });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
