@@ -1,0 +1,50 @@
+/* viewAsanasStyles.css */
+
+/* Style for the container holding the asanas */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  /* Style for each individual asana item */
+  .asanaItem {
+    width: calc(33.33% - 20px); /* Adjust width as per your layout */
+    margin: 10px;
+  }
+  
+  /* Style for the image */
+  .asanaImage {
+    width: 100%;
+    height: auto;
+  }
+  
+  /* Style for the information section */
+  .asanaInfo {
+    margin-top: 10px;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Style for the asana name */
+  .asanaName {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  /* Style for the benefits */
+  .benefits {
+    margin-bottom: 5px;
+  }
+  
+  /* Style for the description */
+  .description {
+    margin-bottom: 5px;
+  }
+  
+  /* Style for the uploaded by section */
+  .uploadedBy {
+    font-style: italic;
+  }
+  
