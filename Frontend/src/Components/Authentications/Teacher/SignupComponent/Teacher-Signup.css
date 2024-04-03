@@ -16,7 +16,10 @@ body {
   border-left: #ff5100;
   height: 100%;
 }
-
+.error{
+  color: red;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
 .card {
   width: 400px;
   

@@ -128,4 +128,20 @@ router.delete("/delete-profile", authenticateToken, async (req, res) => {
   }
 });
 
+router.get("/teacher-list", async (req, res) => {
+  try {
+    const teachers = await Teacher.find();
+
+    const teacherDetails = teachers.map(teacher => ({
+      _id: teacher._id,
+      name: teacher.name,
+      email: teacher.email
+    }));
+
+    res.json(teacherDetails);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 module.exports = router;
