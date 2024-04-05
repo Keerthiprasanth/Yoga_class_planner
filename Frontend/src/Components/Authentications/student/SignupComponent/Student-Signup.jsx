@@ -59,10 +59,10 @@ const StudentSignup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let flag = 0; // Initialize flag
+    let flag = 0;
     Object.values(errors).forEach(val => {
       if (val !== '') {
-        flag = 1; // Set flag to 1 if any error is present
+        flag = 1; 
       }
     });
 
