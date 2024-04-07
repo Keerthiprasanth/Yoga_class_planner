@@ -20,7 +20,7 @@ function App() {
       <Route path='/student-signup' element = {<StudentSignupComponent></StudentSignupComponent>}></Route>
       <Route path='/student-login' element = {<StudentLoginComponent></StudentLoginComponent>}></Route>
       <Route path='/dashboard' element={<DashboardComponent></DashboardComponent>} ></Route>
-      <Route path='/view-asanas' element={<ViewAsanas></ViewAsanas>}></Route>
+      
       </Routes>
     </Router>
   );

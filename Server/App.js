@@ -2,11 +2,12 @@ require("dotenv").config();
 
 const express = require("express");
 const mongoose = require("mongoose");
-
 const student = require("./routes/studentRoute");
 const teacher = require("./routes/teacherRoute");
 const asana = require("./routes/asanaRoute");
 const sequence = require("./routes/sequenceRoute");
+const classRoute = require("./routes/classRoute");
+
 
 const cors = require('cors')
 const app = express();
@@ -31,3 +32,4 @@ app.use("/api/student", student);
 app.use("/api/teacher", teacher);
 app.use("/api/asana", asana);
 app.use("/api/sequence", sequence);
+app.use("/api/session",classRoute);
