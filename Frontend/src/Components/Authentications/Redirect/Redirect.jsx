@@ -12,7 +12,7 @@ const Redirect = () => {
       </div>
   
       <div className="box">
-        <a href='/student-signup'>Login as Student</a>
+        <a href='/student-login'>Login as Student</a>
       </div>
     </div>
     <div className="side-b col-6">

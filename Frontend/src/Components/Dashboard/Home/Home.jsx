@@ -4,6 +4,8 @@ import "./Home.css"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
 import $ from 'jquery'; // Import jQuery for modal handling
+import ViewAsanasComponent from '../View-Asanas/ViewAsanas';
+
 
 const Home = () => {
   const [user, setUser] = useState(null);
@@ -76,10 +78,11 @@ const Home = () => {
   };
 
   return (
+    <div className="dashboard">
     <div className="home" >
       <div className="col-5 username-zone" style={{
-        background: "rgba(102, 51, 153, 0.9)",
-        justifyContent: "center",
+   
+        justifyContent: "left",
         padding: "100px"
       }}>
         <div className="welcome" >
@@ -130,6 +133,11 @@ const Home = () => {
           </div>
         </div>
       </div>
+    </div>
+    <div className="viewAsanas">
+      <span className='text col-12'>Asanas Added by you</span>
+      <ViewAsanasComponent></ViewAsanasComponent>
+    </div>
     </div>
   );
 }
