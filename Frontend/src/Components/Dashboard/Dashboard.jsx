@@ -1,7 +1,7 @@
 import { useState } from "react";
 import HeaderComponent from "./Header/Header";
 import HomeComponent from "./Home/Home";
-
+import CreateClassSession from "./Create-session/Create-session";
 import ViewAsanas from "./View-Asanas/ViewAsanas";
 
 const Dashboard = () => {
@@ -14,7 +14,9 @@ const Dashboard = () => {
       <div> 
         <HomeComponent />
       </div>
-    
+      <div>
+        <CreateClassSession></CreateClassSession>
+      </div>
     </div>
   );
 }

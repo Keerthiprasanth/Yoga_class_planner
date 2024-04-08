@@ -18,7 +18,6 @@ const ViewAsanas = () => {
 
   return (
     <div className="asanas-container">
-      <p className="text-center">Yoga Asanas</p>
       <div className="row">
         {asanas.map(asana => (
           <div className="col-md-4" key={asana._id}>

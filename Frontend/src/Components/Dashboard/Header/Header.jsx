@@ -8,11 +8,11 @@ const Header = () => {
 
   useEffect(() => {
     const storedUser = sessionStorage.getItem('user');
-    console.log('Stored User:', storedUser); // Log the stored user information
+    console.log('Stored User:', storedUser); 
     if (storedUser) {
       try {
         const parsedUser = JSON.parse(storedUser);
-        setUser(parsedUser); // Set the user state with the retrieved user information
+        setUser(parsedUser);
       } catch (error) {
         console.error('Error parsing user:', error);
       }
@@ -37,7 +37,7 @@ const Header = () => {
           aria-controls="navbarSupportedContent" 
           aria-expanded="false" 
           aria-label="Toggle navigation"
-          onClick={toggleDropdown} // Toggle dropdown when clicking the toggler button
+          onClick={toggleDropdown} 
         >
           <span className="navbar-toggler-icon"></span>
         </button>
@@ -51,7 +51,7 @@ const Header = () => {
               <a className="nav-link" href="#">About</a>
             </li>
             <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-              <a className="nav-link" href="#">Services</a>
+              <a className="nav-link" href="#">Request</a>
             </li>
             <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
               <a className="nav-link" href="#">Forms</a>

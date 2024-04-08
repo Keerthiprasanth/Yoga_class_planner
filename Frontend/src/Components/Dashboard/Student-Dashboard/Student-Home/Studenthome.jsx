@@ -1,5 +1,5 @@
 import { Router } from "express";
-import StudentHeaderComponent from "./StudentHeader/StudentHeader.jsx";
+import StudentHeaderComponent from "./StudentHeader/StudentHeader.js";
 const Studenthome = () => {
   return (
     <div className="home">
