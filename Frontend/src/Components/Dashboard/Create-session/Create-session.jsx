@@ -47,7 +47,8 @@ const CreateClassSession = () => {
   };
 
   return (
-    <div className="class-container">
+    <div className="background col-12">
+    <div className="class-container col-6">
       <h2>Create Class Session</h2>
  
       <form onSubmit={handleSubmit}>
@@ -114,8 +115,11 @@ const CreateClassSession = () => {
           {message.content}
         </div>
       )}
-        <button type="submit">Create Session</button>
+      <div className="bottom-btn col-12">
+        <button className='button col-6' type="submit" style={{position:'relative', left:'11vw'}}>Create Session</button>
+        </div>
       </form>
+    </div>
     </div>
   );
 };

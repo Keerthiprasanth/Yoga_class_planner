@@ -36,7 +36,7 @@ const StudentLogin =() =>{
         const username = profileResponse.data.name;
         sessionStorage.setItem('user', JSON.stringify(username));
         console.log("username", username);
-        navigate("/view-asanas");
+        navigate("/student-dashboard");
       } catch (error) {
         console.error("Login Error: ", error);
         alert("Invalid email or password");

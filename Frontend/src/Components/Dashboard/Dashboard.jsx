@@ -1,24 +1,28 @@
-import { useState } from "react";
+// Dashboard.jsx
+import React from 'react';
 import HeaderComponent from "./Header/Header";
 import HomeComponent from "./Home/Home";
-import CreateClassSession from "./Create-session/Create-session";
 import ViewAsanas from "./View-Asanas/ViewAsanas";
+import CreateClassSession from "./Create-session/Create-session";
 
 const Dashboard = () => {
+  const smoothScroll = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const yOffset = -50; // Adjust this value if needed
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
 
   return (
     <div className="dashboard">
-      <div className="header">
-        <HeaderComponent />
-      </div>
-      <div> 
-        <HomeComponent />
-      </div>
-      <div>
-        <CreateClassSession></CreateClassSession>
-      </div>
+      <HeaderComponent smoothScroll={smoothScroll} />
+      <HomeComponent id="home" />
+      <ViewAsanas id="view-asanas" />
+      <CreateClassSession id="create-session" />
     </div>
   );
-}
+};
 
 export default Dashboard;
