@@ -27,9 +27,9 @@ mongoose.connect(process.env.MONGO_URI, {
 })
 .catch(err => console.error('MongoDB connection error:', err));
 
-app.set("view engine", "ejs");
+// app.set("view engine", "ejs");
 app.use("/api/student", student);
 app.use("/api/teacher", teacher);
 app.use("/api/asana", asana);
 app.use("/api/sequence", sequence);
-app.use("/api/session",classRoute);
+app.use("/api/class",classRoute);
