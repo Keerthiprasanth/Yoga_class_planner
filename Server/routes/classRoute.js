@@ -6,7 +6,6 @@ const Teacher = require("../models/teacherModel");
 const Student = require("../models/studentModel");
 const authenticateToken = require("../Middleware/authRequest");
 
-
 router.post("/create-class", authenticateToken, async (req, res) => {
   try {
     const teacherId = req.user.TeacherId;
