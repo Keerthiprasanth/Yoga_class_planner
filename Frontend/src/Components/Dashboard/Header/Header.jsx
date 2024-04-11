@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import './Header.css'; // Import your CSS file
 
 const Header = () => {
   const [user, setUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isHeaderFixed, setIsHeaderFixed] = useState(false);
 
   useEffect(() => {
     const storedUser = sessionStorage.getItem('user');
@@ -17,18 +19,43 @@ const Header = () => {
         console.error('Error parsing user:', error);
       }
     }
+
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setIsHeaderFixed(true);
+      } else {
+        setIsHeaderFixed(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
+
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
+
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
 
+  const smoothScroll = (id) => {
+    const yOffset = -50; // Adjust this value if needed
+    const element = document.getElementById(id);
+    if (element) {
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
+
   return (
-    <div className="header">
+    <div className={`header ${isHeaderFixed ? 'fixed-header' : ''}`}>
       <nav className="navbar navbar-expand-md navbar-light bg-light">
-        <a className="navbar-brand" href="#">Yoga Planner</a>
+        <a className="navbar-brand col-2" href="#">Yoga Planner</a>
         <button 
           className="navbar-toggler" 
           type="button" 
@@ -45,13 +72,13 @@ const Header = () => {
         <div className={`collapse navbar-collapse ${dropdownOpen ? 'show' : ''}`} id="navbarSupportedContent">
           <ul className="navbar-nav ml-auto py-4 py-md-0">
             <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-              <a className="nav-link" href="#">Home</a>
+              <a className="nav-link" href="#" onClick={() => smoothScroll('home')}>Home</a>
             </li>
             <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-              <a className="nav-link" href="#">About</a>
+              <a className="nav-link" href="#" onClick={() => smoothScroll('view-asanas')}>View Asanas</a>
             </li>
             <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-              <a className="nav-link" href="#">Request</a>
+              <a className="nav-link" href="#" onClick={() => smoothScroll('create-session')}>Create new session</a>
             </li>
             <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
               <a className="nav-link" href="#">Forms</a>
@@ -60,11 +87,11 @@ const Header = () => {
               <a className="nav-link" href="#">Session</a>
             </li>
             
-            <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4 dropdown">
+
             <div className="btn-group">
               <a 
                 className="nav-link dropdown-toggle" 
-                href="#" 
+                href="javascript:void(0)" 
                 role="button" 
                 onClick={toggleDropdown}
                 aria-haspopup="true" 
@@ -75,8 +102,8 @@ const Header = () => {
               <div className={`dropdown-menu col-5  ${dropdownOpen ? 'show' : ''}`}>
                 <a href='#' className='col-5'>Settings</a>
               </div>
-              </div>
-            </li>
+            </div>
+            
           </ul>
         </div>
       </nav>

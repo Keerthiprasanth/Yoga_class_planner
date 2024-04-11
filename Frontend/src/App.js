@@ -8,7 +8,8 @@ import LoginCompoenent from './Components/Authentications/Teacher/LoginComponent
 import { BrowserRouter as  Router, Routes,Route } from 'react-router-dom';
 import RedirectComponent from './Components/Authentications/Redirect/Redirect.jsx';
 import DashboardComponent from './Components/Dashboard/Dashboard.jsx';
-import ViewAsanas from './Components/Dashboard/View-Asanas/ViewAsanas.jsx';
+import StudentDashboard from './Components/Studnet-Dashboard/Student-Dashboard.jsx';
+
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
       <Route path='/student-signup' element = {<StudentSignupComponent></StudentSignupComponent>}></Route>
       <Route path='/student-login' element = {<StudentLoginComponent></StudentLoginComponent>}></Route>
       <Route path='/dashboard' element={<DashboardComponent></DashboardComponent>} ></Route>
-      
+      <Route path='/student-dashboard' element={<StudentDashboard></StudentDashboard>}></Route>
       </Routes>
     </Router>
   );

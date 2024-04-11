@@ -1,12 +1,17 @@
 .asanas-container {
+  margin: 50px 0px;
+    height: 100%;
+  }
+  .image-box{
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    margin-left: 50px;
   }
   
   .card {
-    width: 300px; /* Set the width of each card */
-    margin: 10px; /* Adjust the margin as needed */
+    width: 300px; 
+    margin: 10px; 
     border: 1px solid #ccc;
     border-radius: 5px;
   }

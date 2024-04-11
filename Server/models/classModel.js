@@ -33,6 +33,11 @@ const classSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Student', 
   }],
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', 
+    required: true,
+  }
 }, { timestamps: true });
 
 const Class = mongoose.model("Class", classSchema);

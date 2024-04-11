@@ -22,7 +22,7 @@ const Home = () => {
       }
     }
   }, []);
-
+  
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
@@ -85,14 +85,12 @@ const Home = () => {
         justifyContent: "left",
         padding: "100px"
       }}>
-        <div className="welcome" >
-          <span> Hi, {user ? capitalizeFirstLetter(user) : ''}</span>
-        </div>
+      
         <div className="app-name">
-          Welcome to Yoga Planner As Teacher
+          Welcome to Yoga Planner <h2> {user ? capitalizeFirstLetter(user) : ''} </h2>
         </div>
         <div className="add-asanas">
-          You can add Asanas by clicking below
+        As a teacher You can add Asanas by clicking below
           <br />
           <button type="button" className="button mt-2" data-toggle="modal" data-target="#exampleModalLong">
             Add asanas
@@ -134,10 +132,7 @@ const Home = () => {
         </div>
       </div>
     </div>
-    <div className="viewAsanas">
-      <span className='text col-12'>Asanas Added by you</span>
-      <ViewAsanasComponent></ViewAsanasComponent>
-    </div>
+   
     </div>
   );
 }
