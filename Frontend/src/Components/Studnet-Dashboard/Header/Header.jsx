@@ -28,7 +28,7 @@ const StudentHeader = () => {
   };
 
   return (
-    <div className="header">
+    <div className="student-header">
       <nav className="navbar navbar-expand-md navbar-light bg-light">
         <a className="navbar-brand" href="#">
           Yoga Planner
@@ -60,10 +60,8 @@ const StudentHeader = () => {
                   className="form-control"
                   placeholder="Search"
                 />
-            
               </div>
             </li>
-
             <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
               <a className="nav-link" href="#">
                 Forms

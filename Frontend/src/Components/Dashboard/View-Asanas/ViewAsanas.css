@@ -10,8 +10,8 @@
   }
   
   .card {
-    width: 300px; /* Set the width of each card */
-    margin: 10px; /* Adjust the margin as needed */
+    width: 300px; 
+    margin: 10px; 
     border: 1px solid #ccc;
     border-radius: 5px;
   }
