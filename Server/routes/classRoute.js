@@ -101,4 +101,44 @@ router.get("/get-classes", async (req, res) => {
   }
 });
 
+router.put("/update-class/:classId", authenticateToken, async (req, res) => {
+    try {
+      const { classId } = req.params;
+      const { className, description, date, time, duration, maxCapacity } = req.body;
+  
+      const updatedClass = await Class.findByIdAndUpdate(classId, {
+        className,
+        description,
+        date,
+        time,
+        duration,
+        maxCapacity,
+      }, { new: true });
+  
+      if (!updatedClass) {
+        return res.status(404).json({ message: "Class not found" });
+      }
+  
+      res.status(200).json({ message: "Class updated successfully", class: updatedClass });
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  });
+  
+  router.delete("/delete-class/:classId", authenticateToken, async (req, res) => {
+    try {
+      const { classId } = req.params;
+  
+      const deletedClass = await Class.findByIdAndDelete(classId);
+  
+      if (!deletedClass) {
+        return res.status(404).json({ message: "Class not found" });
+      }
+  
+      res.status(200).json({ message: "Class deleted successfully" });
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  });
+
 module.exports = router;
