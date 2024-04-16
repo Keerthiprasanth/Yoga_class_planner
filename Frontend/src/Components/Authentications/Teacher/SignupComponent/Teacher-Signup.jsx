@@ -25,7 +25,10 @@ const TeacherSignup = () => {
     email: '',
     password: '',
     confirmPassword: '',
+    birthDate: '',
   });
+
+  const [flag, setFlag] = useState(0); // Initialize flag
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,6 +40,16 @@ const TeacherSignup = () => {
       error = 'Password must contain at least one digit, one lowercase letter, one uppercase letter, one special character, and be at least 8 characters long';
     } else if (name === "confirmPassword" && value !== formData.password) {
       error = "Passwords do not match";
+    } else if (name === "birthDate") {
+      const selectedDate = new Date(value);
+      const currentDate = new Date();
+      const maxDate = new Date(currentDate.getFullYear() - 2, currentDate.getMonth(), currentDate.getDate());
+      if (selectedDate > maxDate) {
+        error = "Date should not be within past 2 years";
+        setFlag(1); 
+      } else {
+        setFlag(0); 
+      }
     }
 
     setErrors((prevErrors) => ({
@@ -59,14 +72,8 @@ const TeacherSignup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let flag = 0; // Initialize flag
-    Object.values(errors).forEach(val => {
-      if (val !== '') {
-        flag = 1; // Set flag to 1 if any error is present
-      }
-    });
 
-    if (flag === 0) {
+    if (flag === 0) { // Check flag value
       try {
         const response = await axios.post('http://localhost:3001/api/teacher/register', formData);
         console.log("Response ", response.data);
@@ -99,8 +106,8 @@ const TeacherSignup = () => {
           <input className="text" name="confirmPassword" value={form.confirmPassword} onChange={handleChange} placeholder="Confirm Password" required></input>
           <div className="error">{errors.confirmPassword}</div>
           <input type="date" name="birthDate" value={formData.age} onChange={handleChange} placeholder="DOB" required min="1960-01-01" max=""></input>
-
-          <select id="cars" name="cars" onChange={handleChange}>
+          <div className="error">{errors.birthDate}</div>
+          <select id="experienceLevel" name="experienceLevel" value={formData.experienceLevel} onChange={handleChange}>
             <option value="">Select Experience Level</option>
             <option value="beginner">Beginner</option>
             <option value="intermediate">Intermediate</option>
@@ -108,7 +115,7 @@ const TeacherSignup = () => {
             <option value="expert">Expert</option>
           </select>
           <span>Already registered? <a href="/teacher-login">Login</a></span>
-          <button type="submit" className="login-button" disabled={Object.values(errors).some(val => val !== '')}>Submit</button>
+          <button type="submit" className="login-button" disabled={flag === 1}>Submit</button>
         </form>
       </div>
     </div>

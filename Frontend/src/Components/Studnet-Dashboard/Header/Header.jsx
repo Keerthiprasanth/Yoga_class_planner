@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const StudentHeader = () => {
   const [user, setUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
     const storedUser = sessionStorage.getItem('user');
@@ -25,6 +28,20 @@ const StudentHeader = () => {
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
+  };
+
+  const handleSearchChange = async (event) => {
+    const searchTerm = event.target.value;
+    setSearchTerm(searchTerm);
+
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/api/asana/view-asanas?search=${searchTerm}`
+      );
+      setSearchResults(response.data); // Assuming response.data is an array of search results
+    } catch (error) {
+      console.error('Error fetching search results:', error);
+    }
   };
 
   return (
@@ -59,6 +76,8 @@ const StudentHeader = () => {
                   type="search"
                   className="form-control"
                   placeholder="Search"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
                 />
               </div>
             </li>
@@ -101,6 +120,16 @@ const StudentHeader = () => {
           </ul>
         </div>
       </nav>
+      {/* Display search results */}
+      <div className="search-results">
+        <ul>
+          {searchResults.map((result) => (
+            <li key={result.id}>
+              {result.name} {/* Assuming each item has a name property */}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
