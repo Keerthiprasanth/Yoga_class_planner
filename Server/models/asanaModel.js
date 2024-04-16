@@ -4,7 +4,7 @@ const asanaSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   description: {
     type: String,
@@ -20,7 +20,17 @@ const asanaSchema = new mongoose.Schema({
   },
   asanaType: {
     type: String,
-    enum: ["Full-body", "Legs", "Back", "Abdominals", "Arms", "Hamstrings", "Hips", "Chest", "Shoulders"]
+    enum: [
+      "Full-body",
+      "Legs",
+      "Back",
+      "Abdominals",
+      "Arms",
+      "Hamstrings",
+      "Hips",
+      "Chest",
+      "Shoulders",
+    ],
   },
   addedByName: {
     type: String,
@@ -29,7 +39,7 @@ const asanaSchema = new mongoose.Schema({
   addedById: {
     type: String,
     required: true,
-  }
+  },
 });
 
 const Asana = mongoose.model("Asana", asanaSchema);

@@ -32,11 +32,7 @@ const classSchema = new mongoose.Schema({
   students: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Student', 
-  }],
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', 
-  }
+  }]
 }, { timestamps: true });
 
 const Class = mongoose.model("Class", classSchema);
