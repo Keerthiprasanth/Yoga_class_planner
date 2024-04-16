@@ -16,7 +16,7 @@ const StudentSignup = () => {
     dob: '',
     experienceLevel: '',
   });
-
+  const [flag, setFlag] = useState(0);
   const [form, setForm] = useState({
     confirmPassword: '',
   });
@@ -37,6 +37,16 @@ const StudentSignup = () => {
       error = 'Password must contain at least one digit, one lowercase letter, one uppercase letter, one special character, and be at least 8 characters long';
     } else if (name === "confirmPassword" && value !== formData.password) {
       error = "Passwords do not match";
+    } else if (name === "birthDate") {
+      const selectedDate = new Date(value);
+      const currentDate = new Date();
+      const maxDate = new Date(currentDate.getFullYear() - 2, currentDate.getMonth(), currentDate.getDate());
+      if (selectedDate > maxDate) {
+        error = "Date should not be within past 2 years";
+        setFlag(1); 
+      } else {
+        setFlag(0); 
+      }
     }
 
     setErrors((prevErrors) => ({
@@ -98,6 +108,7 @@ const StudentSignup = () => {
           <input className="text" name="confirmPassword" value={form.confirmPassword} onChange={handleChange} placeholder="Confirm Password" required></input>
           <div className="error">{errors.confirmPassword}</div>
           <input type="date" name="birthDate" value={formData.age} onChange={handleChange} placeholder="DOB" required min="1960-01-01" max=""></input>
+          <div className="error">{errors.birthDate}</div>
           <span>Already registered? <a href="/student-login">Login</a></span>
           <button type="submit" className="login-button" disabled={Object.values(errors).some(val => val !== '')}>Submit</button>
         </form>
