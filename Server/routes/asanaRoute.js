@@ -131,4 +131,16 @@ router.delete("/delete/:id", authenticateToken, async (req, res) => {
   }
 });
 
+router.get("/teacher-asanas", authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.TeacherId;
+
+    const asanas = await Asana.find({ addedById: userId });
+
+    res.status(200).json({ asanas });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 module.exports = router;
