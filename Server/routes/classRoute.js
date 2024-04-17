@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const nodemailer = require("nodemailer");
 
 const Class = require("../models/classModel");
 const Teacher = require("../models/teacherModel");
@@ -25,11 +26,9 @@ router.post("/create-class", authenticateToken, async (req, res) => {
     });
 
     if (existingClass) {
-      return res
-        .status(400)
-        .json({
-          message: "Teacher already has a class scheduled at the same time",
-        });
+      return res.status(400).json({
+        message: "Teacher already has a class scheduled at the same time",
+      });
     }
 
     const newClass = new Class({
@@ -64,7 +63,7 @@ router.post("/join-class/:classId", authenticateToken, async (req, res) => {
       return res.status(404).json({ message: "Student not found" });
     }
 
-    const classToJoin = await Class.findById(classId);
+    const classToJoin = await Class.findById(classId).populate("teacher");
     if (!classToJoin) {
       return res.status(404).json({ message: "Class not found" });
     }
@@ -79,8 +78,37 @@ router.post("/join-class/:classId", authenticateToken, async (req, res) => {
         .json({ message: "Student is already enrolled in the class" });
     }
 
+    const teacher = await Class.findById(classToJoin.teacher);
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      host: "smtp@gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: "shyamgjk43@gmail.com",
+        pass: "opprpdnrjukptkmb",
+      },
+    });
+
+    console.log(student.email);
+    
+    const mailOptions = {
+      from: "shyamgjk43@gmail.com",
+      to: student.email,
+      subject: "Class booking report",
+      text:
+        `Dear ${student.name},\n\n` +
+        `This is your booking confirmation for the yoga session on ${classToJoin.className} held by ${classToJoin.teacher.name} on ${classToJoin.date}. Your session timings is ${classToJoin.time}. Here is a short description about the class - "${classToJoin.description}".\n\n` +
+        `Best regards,\nZen Flow Yoga Trainings`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
     classToJoin.students.push(studentId);
     await classToJoin.save();
+
+    
 
     res.status(200).json({ message: "Student joined the class successfully" });
   } catch (error) {
@@ -102,43 +130,74 @@ router.get("/get-classes", async (req, res) => {
 });
 
 router.put("/update-class/:classId", authenticateToken, async (req, res) => {
-    try {
-      const { classId } = req.params;
-      const { className, description, date, time, duration, maxCapacity } = req.body;
-  
-      const updatedClass = await Class.findByIdAndUpdate(classId, {
+  try {
+    const { classId } = req.params;
+    const { className, description, date, time, duration, maxCapacity } =
+      req.body;
+
+    const updatedClass = await Class.findByIdAndUpdate(
+      classId,
+      {
         className,
         description,
         date,
         time,
         duration,
         maxCapacity,
-      }, { new: true });
-  
-      if (!updatedClass) {
-        return res.status(404).json({ message: "Class not found" });
-      }
-  
-      res.status(200).json({ message: "Class updated successfully", class: updatedClass });
-    } catch (error) {
-      res.status(400).json({ error: error.message });
+      },
+      { new: true }
+    );
+
+    if (!updatedClass) {
+      return res.status(404).json({ message: "Class not found" });
     }
-  });
-  
-  router.delete("/delete-class/:classId", authenticateToken, async (req, res) => {
-    try {
-      const { classId } = req.params;
-  
-      const deletedClass = await Class.findByIdAndDelete(classId);
-  
-      if (!deletedClass) {
-        return res.status(404).json({ message: "Class not found" });
-      }
-  
-      res.status(200).json({ message: "Class deleted successfully" });
-    } catch (error) {
-      res.status(400).json({ error: error.message });
+
+    res
+      .status(200)
+      .json({ message: "Class updated successfully", class: updatedClass });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+router.delete("/delete-class/:classId", authenticateToken, async (req, res) => {
+  try {
+    const { classId } = req.params;
+
+    const deletedClass = await Class.findByIdAndDelete(classId);
+
+    if (!deletedClass) {
+      return res.status(404).json({ message: "Class not found" });
     }
-  });
+
+    res.status(200).json({ message: "Class deleted successfully" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+router.get("/teacher-classes", authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.TeacherId;
+
+    const classes = await Class.find({ teacher: userId });
+
+    res.status(200).json({ classes });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+router.get("/student-classes", authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.StudentId;
+
+    const classes = await Class.find({ students: userId });
+
+    res.status(200).json({ classes });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
 
 module.exports = router;

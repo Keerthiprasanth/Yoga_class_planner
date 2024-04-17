@@ -1,9 +1,16 @@
 const express = require("express");
 const router = express.Router();
+const AWS = require("aws-sdk");
 
 const Teacher = require("../models/teacherModel");
 const Asana = require("../models/asanaModel");
 const authenticateToken = require("../Middleware/authRequest");
+
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION,
+});
 
 const multer = require("multer");
 const fs = require("fs");
@@ -13,15 +20,7 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir);
 }
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
-
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 router.post(
@@ -37,16 +36,29 @@ router.post(
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
+      const addedById = userId;
 
       if (!req.file) {
         return res.status(400).json({ message: "No file uploaded" });
       }
 
+      console.log("File buffer check - ",req.file);
+
+      const uploadParams = {
+        Bucket: process.env.S3_BUCKET_NAME,
+        Key: `${addedById}/${Date.now()}-${req.file.originalname}`,
+        Body: req.file.buffer,
+        ACL: "public-read",
+        ContentType: req.file.mimetype,
+      };
+
+      const uploadResult = await s3.upload(uploadParams).promise();
+
       const newAsana = new Asana({
         name: req.body.name,
         description: req.body.description,
         benefits: req.body.benefits,
-        image: req.file.filename,
+        image: uploadResult.Location,
         asanaType: req.body.asanaType,
         addedByName: user.name,
         addedById: userId,
