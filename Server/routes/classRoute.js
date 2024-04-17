@@ -87,7 +87,7 @@ router.post("/join-class/:classId", authenticateToken, async (req, res) => {
       secure: true,
       auth: {
         user: "shyamgjk43@gmail.com",
-        pass: "opprpdnrjukptkmb",
+        pass: process.env.GMAIL_PASS,
       },
     });
 
