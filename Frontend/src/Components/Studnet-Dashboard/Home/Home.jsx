@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Dropdown, OverlayTrigger } from 'react-bootstrap';
+import { Dropdown, Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './StudentHome.css';
 import ContextMenu from './ContextMenu';
+import Forms from '../Forms/Forms'; 
 
 const StudentHome = () => {
   const [classesData, setClassesData] = useState([]);
@@ -13,6 +14,7 @@ const StudentHome = () => {
   const [isContextMenuVisible, setContextMenuVisible] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [showFormsModal, setShowFormsModal] = useState(false); 
   const classesPerPage = 3;
 
   useEffect(() => {
@@ -26,7 +28,7 @@ const StudentHome = () => {
         };
 
         const response = await axios.get('http://localhost:3001/api/class/get-classes', config);
-        console.log('API Response:', response.data); // Log the API response
+        console.log('API Response:', response.data); 
         const sortedData = response.data
           .filter(classItem => new Date(classItem.date) >= new Date())
           .sort((a, b) => new Date(a.date + 'T' + a.time) - new Date(b.date + 'T' + b.time));
@@ -84,14 +86,15 @@ const StudentHome = () => {
       <div className="class-box-container">
         {displayedClasses.map((classItem) => {
           console.log('Class ID:', classItem._id); 
-          console.log('class name ' , classItem.className)
           return (
             <div className="class-box" key={classItem.id} onContextMenu={handleContextMenu}>
-              <h2>{classItem.className}</h2>
+               <h2>{classItem.className}</h2>
               <p>{classItem.description}</p>
               <p>Date: {new Date(classItem.date).toLocaleDateString()}</p>
               <p>Time: {classItem.time}</p>
               <p>Available Capacity: {classItem.maxCapacity - classItem.students.length}</p>
+              <Button className='button' onClick={() => setShowFormsModal(true)}>Forms</Button>
+              <br></br>
               <button className="button" onClick={() => bookSession(classItem._id)}>Book session</button>
             </div>
           );
@@ -100,7 +103,21 @@ const StudentHome = () => {
       <button onClick={loadMoreClasses} className="button col-12" style={{ width: '400px', justifyContent: 'center', alignItems: 'center' }}>
         Load More
       </button>
-      <ContextMenu isVisible={isContextMenuVisible} xPos={contextMenuPos.xPos} yPos={contextMenuPos.yPos} handleClose={handleCloseContextMenu} />
+      <Modal show={showFormsModal} onHide={() => setShowFormsModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Forms</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Forms />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowFormsModal(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+  
     </div>
   );
 };
