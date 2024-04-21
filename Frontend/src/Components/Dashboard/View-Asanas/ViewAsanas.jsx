@@ -5,6 +5,7 @@ import './ViewAsanas.css';
 const ViewAsanas = () => {
   const [asanas, setAsanas] = useState([]);
   const [visibleAsanas, setVisibleAsanas] = useState(3); 
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     axios.get('http://localhost:3001/api/asana/view-asanas')
@@ -20,12 +21,23 @@ const ViewAsanas = () => {
     setVisibleAsanas(prev => prev + 3);
   }
 
+  // Filter asanas based on search query
+  const filteredAsanas = asanas.filter(asana => 
+    asana.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="asanas-container col-12">
-      <h3>Asasnas added by you</h3>
+      <h3>Asasnas</h3>
+      <input
+        type="text"
+        placeholder="Search asanas..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
       <br></br>
       <div className="image-box">
-      {asanas.slice(0, visibleAsanas).map((asana, index) => (
+      {filteredAsanas.slice(0, visibleAsanas).map((asana, index) => (
         <div className="col-md-4" key={asana._id}>
           <div className="card mb-4">
             <img src={asana.image} className="card-img-top" alt={asana.name} />
@@ -44,7 +56,7 @@ const ViewAsanas = () => {
         </div>
       ))}
       <div className="text-center">
-        {visibleAsanas < asanas.length && (
+        {visibleAsanas < filteredAsanas.length && (
           <button className="button col-12" onClick={loadMore}>Load More</button>
         )}
       </div>

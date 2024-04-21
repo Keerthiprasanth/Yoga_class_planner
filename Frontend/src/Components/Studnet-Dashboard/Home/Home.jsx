@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './StudentHome.css';
 import ContextMenu from './ContextMenu';
 import Forms from '../Forms/Forms'; 
+import ViewAsanas from "../../Dashboard/View-Asanas/ViewAsanas"
 
 const StudentHome = () => {
   const [classesData, setClassesData] = useState([]);
@@ -80,6 +81,9 @@ const StudentHome = () => {
 
   return (
     <div className="student-home">
+      <div className="view-asanas">
+      <ViewAsanas></ViewAsanas>
+      </div>
       {successMessage && <div className="success-message">{successMessage}</div>}
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       <h1>Classes that are available</h1>
