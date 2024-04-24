@@ -52,6 +52,10 @@ const Header = () => {
     }
   };
 
+  const handleProfileUpdate = (updatedName) => {
+    setUser(updatedName);
+  };
+
   return (
     <div className={`header ${isHeaderFixed ? 'fixed-header' : ''}`}>
       <nav className="navbar navbar-expand-md navbar-light bg-light">
@@ -97,10 +101,10 @@ const Header = () => {
                 aria-haspopup="true" 
                 aria-expanded={dropdownOpen}
               >
-                <span className='col-5'>{user?capitalizeFirstLetter(user) : 'Profile'}</span>
+                <span className='col-5'>{user ? capitalizeFirstLetter(user) : 'Profile'}</span>
               </a>
               <div className={`dropdown-menu col-5  ${dropdownOpen ? 'show' : ''}`}>
-                <a href='#' className='col-5'>Settings</a>
+                <a href='/teacher-settings' className='col-5'>Settings</a>
               </div>
             </div>
             

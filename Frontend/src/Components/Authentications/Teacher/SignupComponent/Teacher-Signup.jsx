@@ -73,7 +73,7 @@ const TeacherSignup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (flag === 0) { // Check flag value
+    if (flag === 0) { 
       try {
         const response = await axios.post('http://localhost:3001/api/teacher/register', formData);
         console.log("Response ", response.data);

@@ -38,7 +38,7 @@ const StudentHeader = () => {
       const response = await axios.get(
         `http://localhost:3001/api/asana/view-asanas?search=${searchTerm}`
       );
-      setSearchResults(response.data); // Assuming response.data is an array of search results
+      setSearchResults(response.data); 
     } catch (error) {
       console.error('Error fetching search results:', error);
     }
@@ -120,12 +120,12 @@ const StudentHeader = () => {
           </ul>
         </div>
       </nav>
-      {/* Display search results */}
+    
       <div className="search-results">
         <ul>
           {searchResults.map((result) => (
             <li key={result.id}>
-              {result.name} {/* Assuming each item has a name property */}
+              {result.name} 
             </li>
           ))}
         </ul>

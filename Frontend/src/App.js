@@ -9,6 +9,7 @@ import { BrowserRouter as  Router, Routes,Route } from 'react-router-dom';
 import RedirectComponent from './Components/Authentications/Redirect/Redirect.jsx';
 import DashboardComponent from './Components/Dashboard/Dashboard.jsx';
 import StudentDashboard from './Components/Studnet-Dashboard/Student-Dashboard.jsx';
+import TeacherSettings from './Components/Dashboard/TeacherSetting/Teacher-setting.jsx';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
       <Route path='/student-login' element = {<StudentLoginComponent></StudentLoginComponent>}></Route>
       <Route path='/dashboard' element={<DashboardComponent></DashboardComponent>} ></Route>
       <Route path='/student-dashboard' element={<StudentDashboard></StudentDashboard>}></Route>
+      <Route path='/teacher-settings' element={<TeacherSettings></TeacherSettings>}></Route>
       </Routes>
     </Router>
   );
