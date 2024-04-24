@@ -2,6 +2,7 @@
 import React from 'react';
 import HeaderComponent from "./Header/Header";
 import HomeComponent from "./Home/Home";
+import AsanasAddedByUser from './AsasnsAddedByUser/AsanasAddedByUser';
 import ViewAsanas from "./View-Asanas/ViewAsanas";
 import CreateClassSession from "./Create-session/Create-session";
 
@@ -19,6 +20,7 @@ const Dashboard = () => {
     <div className="dashboard">
       <HeaderComponent smoothScroll={smoothScroll} />
       <HomeComponent id="home" />
+      <AsanasAddedByUser></AsanasAddedByUser>
       <ViewAsanas id="view-asanas" />
       <CreateClassSession id="create-session" />
     </div>
