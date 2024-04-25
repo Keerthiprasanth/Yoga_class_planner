@@ -48,7 +48,7 @@ router.post("/login", async (req, res) => {
     }
 
     const token = jwt.sign({ TeacherId: existingTeacher._id }, process.env.SECRET, {
-      expiresIn: "1h",
+      expiresIn: "2h",
     });
 
     res.status(200).json({ token });

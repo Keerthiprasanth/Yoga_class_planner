@@ -7,6 +7,7 @@ const teacher = require("./routes/teacherRoute");
 const asana = require("./routes/asanaRoute");
 const sequence = require("./routes/sequenceRoute");
 const classRoute = require("./routes/classRoute");
+const admin = require("./routes/adminRoute");
 
 
 const cors = require('cors')
@@ -33,3 +34,4 @@ app.use("/api/teacher", teacher);
 app.use("/api/asana", asana);
 app.use("/api/sequence", sequence);
 app.use("/api/class",classRoute);
+app.use("api/admin", admin);

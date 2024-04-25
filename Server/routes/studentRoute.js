@@ -50,7 +50,7 @@ router.post("/login", async (req, res) => {
       { StudentId: existingStudent._id },
       process.env.SECRET,
       {
-        expiresIn: "1h",
+        expiresIn: "2h",
       }
     );
 

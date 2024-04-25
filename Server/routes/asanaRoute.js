@@ -26,7 +26,7 @@ const upload = multer({ storage: storage });
 router.post(
   "/add-asana",
   authenticateToken,
-  upload.single("image"),
+  upload.array("image"),
   async (req, res) => {
     console.log("Request Body:", req.body);
     try {
@@ -38,27 +38,33 @@ router.post(
       }
       const addedById = userId;
 
-      if (!req.file) {
-        return res.status(400).json({ message: "No file uploaded" });
+      if (!req.files || req.files.length === 0) {
+        return res.status(400).json({ message: "No files uploaded" });
       }
 
-      console.log("File buffer check - ",req.file);
+      console.log("File buffer check - ", req.files);
 
-      const uploadParams = {
-        Bucket: process.env.S3_BUCKET_NAME,
-        Key: `${addedById}/${Date.now()}-${req.file.originalname}`,
-        Body: req.file.buffer,
-        ACL: "public-read",
-        ContentType: req.file.mimetype,
-      };
+      const uploadResults = await Promise.all(
+        req.files.map(async (file) => {
+          const uploadParams = {
+            Bucket: process.env.S3_BUCKET_NAME,
+            Key: `${addedById}/${Date.now()}-${file.originalname}`,
+            Body: file.buffer,
+            ACL: "public-read",
+            ContentType: file.mimetype,
+          };
 
-      const uploadResult = await s3.upload(uploadParams).promise();
+          return await s3.upload(uploadParams).promise();
+        })
+      );
+
+      const imageUrls = uploadResults.map((result) => result.Location);
 
       const newAsana = new Asana({
         name: req.body.name,
         description: req.body.description,
         benefits: req.body.benefits,
-        image: uploadResult.Location,
+        image: imageUrls,
         asanaType: req.body.asanaType,
         addedByName: user.name,
         addedById: userId,
@@ -86,7 +92,7 @@ router.get("/view-asanas", async (req, res) => {
 router.put(
   "/update/:id",
   authenticateToken,
-  upload.single("image"),
+  upload.array("image"),
   async (req, res) => {
     try {
       const asanaId = req.params.id;
@@ -106,10 +112,27 @@ router.put(
       if (req.body.benefits) {
         asana.benefits = req.body.benefits;
       }
-      if (req.file) {
-        asana.image = req.file.filename;
+      if (req.files && req.files.length > 0) {
+        const uploadResults = await Promise.all(
+          req.files.map(async (file) => {
+            const uploadParams = {
+              Bucket: process.env.S3_BUCKET_NAME,
+              Key: `${asana.addedById}/${Date.now()}-${file.originalname}`,
+              Body: file.buffer,
+              ACL: "public-read",
+              ContentType: file.mimetype,
+            };
+
+            return await s3.upload(uploadParams).promise();
+          })
+        );
+
+        asana.image.push(...uploadResults.map(result => result.Location));
       }
-      if (req.body.asanaType){
+      if (req.body.deletedImages && req.body.deletedImages.length > 0) {
+        asana.image = asana.image.filter(image => !req.body.deletedImages.includes(image));
+      }
+      if (req.body.asanaType) {
         asana.asanaType = req.body.asanaType;
       }
 
