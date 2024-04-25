@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './Create-session.css'; // Import CSS file for styling
+import './Create-session.css'; 
 
 const CreateClassSession = () => {
   const [formData, setFormData] = useState({
@@ -20,10 +20,10 @@ const CreateClassSession = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Get token from session storage
+  
     const token = sessionStorage.getItem('token');
 
-    // Validation
+   
     const currentDate = new Date();
     const selectedDate = new Date(formData.date);
     const currentTime = formData.time.split(':').map(Number);
@@ -33,7 +33,7 @@ const CreateClassSession = () => {
     }
 
     try {
-      // Include token in request headers
+  
       const response = await axios.post('http://localhost:3001/api/class/create-class', formData, {
         headers: {
           Authorization: `Bearer ${token}`

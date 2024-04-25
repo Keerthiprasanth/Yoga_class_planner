@@ -1,6 +1,6 @@
 /* AsanasAddedByUser.css */
 .asanas-container {
-    margin: 50px 0px;
+    margin: 82px 0px;
     height: 100%;
   }
   
@@ -12,17 +12,16 @@
   }
   
   .card {
-    width: 300px; 
+    width: 371px; 
     margin: 10px; 
     border: 1px solid #ccc;
     border-radius: 5px;
   }
   
   .card-img-top {
-    width: 100%;
-    height: 200px; /* Set the height of the image */
-    object-fit: cover; /* Ensure the image covers the entire area */
-    border-bottom: 1px solid #ccc; /* Add a border at the bottom */
+    width: 334px;
+    height: 314px;
+    object-fit: inherit;
   }
   
   .card-body {

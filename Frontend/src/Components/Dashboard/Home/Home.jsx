@@ -119,7 +119,7 @@ const Home = () => {
                   </div>
                   <div className="form-group">
                     <label htmlFor="asanaImage">Image Upload:</label>
-                    <input type="file" className="form-control-file" id="asanaImage" accept="image/*" required />
+                    <input type="file" className="form-control-file" id="asanaImage" accept="image/*" onChange={handleFileChange} required />
                   </div>
                 </div>
                 <div className="modal-footer">
