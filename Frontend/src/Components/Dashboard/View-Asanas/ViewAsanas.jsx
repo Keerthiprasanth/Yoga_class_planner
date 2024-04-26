@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import './ViewAsanas.css'; 
+import AsanasAddedByUser from "../AsasnsAddedByUser/AsanasAddedByUser";
 
 const ViewAsanas = () => {
   const [asanas, setAsanas] = useState([]);
@@ -27,7 +28,9 @@ const ViewAsanas = () => {
   );
 
   return (
+
     <div className="asanas-container col-12">
+      <AsanasAddedByUser></AsanasAddedByUser>
       <h3>Asasnas</h3>
       <input
         type="text"
@@ -42,8 +45,9 @@ const ViewAsanas = () => {
           <div className="card mb-4">
             <img src={asana.image} className="card-img-top" alt={asana.name} />
             <div className="card-body">
-              <h5 className="card-title">{asana.name}</h5>
-              <p className="card-text">{asana.description}</p>
+              <h5 className="card-title">asana name : {asana.name}</h5>
+              <p className="card-text">asana description : {asana.description}</p>
+              <p>Benifits</p>
               {asana.benefits.length > 0 && (
                 <ul>
                   {asana.benefits.map((benefit, index) => (

@@ -18,11 +18,8 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <HeaderComponent smoothScroll={smoothScroll} />
+  
       <HomeComponent id="home" />
-      <AsanasAddedByUser></AsanasAddedByUser>
-      <ViewAsanas id="view-asanas" />
-      <CreateClassSession id="create-session" />
     </div>
   );
 };

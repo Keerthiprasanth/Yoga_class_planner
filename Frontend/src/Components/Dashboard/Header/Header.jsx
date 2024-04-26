@@ -76,19 +76,14 @@ const Header = () => {
         <div className={`collapse navbar-collapse ${dropdownOpen ? 'show' : ''}`} id="navbarSupportedContent">
           <ul className="navbar-nav ml-auto py-4 py-md-0">
             <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-              <a className="nav-link" href="#" onClick={() => smoothScroll('home')}>Home</a>
+              <a className="nav-link" href="/dashboard" >Home</a>
             </li>
             <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-              <a className="nav-link" href="#" onClick={() => smoothScroll('view-asanas')}>View Asanas</a>
+              <a className="nav-link" href="/viewAsanas">View Asanas</a>
             </li>
+  
             <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-              <a className="nav-link" href="#" onClick={() => smoothScroll('create-session')}>Create new session</a>
-            </li>
-            <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-              <a className="nav-link" href="#">Forms</a>
-            </li>
-            <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-              <a className="nav-link" href="#">Session</a>
+              <a className="nav-link" href="/createClssSession">Sessions</a>
             </li>
             
 
