@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const nodemailer = require("nodemailer");
+const { v4: uuidv4 } = require('uuid');
 
 const Class = require("../models/classModel");
 const Teacher = require("../models/teacherModel");
@@ -78,6 +79,9 @@ router.post("/join-class/:classId", authenticateToken, async (req, res) => {
         .json({ message: "Student is already enrolled in the class" });
     }
 
+    const bookingId = uuidv4();
+    student.bookingId = bookingId;
+
     const teacher = await Class.findById(classToJoin.teacher);
 
     const transporter = nodemailer.createTransport({
@@ -96,7 +100,7 @@ router.post("/join-class/:classId", authenticateToken, async (req, res) => {
     const mailOptions = {
       from: "shyamgjk43@gmail.com",
       to: student.email,
-      subject: "Class booking report",
+      subject: `Class booking confirmation ID - ${student.bookingId}`,
       text:
         `Dear ${student.name},\n\n` +
         `This is your booking confirmation for the yoga session on ${classToJoin.className} held by ${classToJoin.teacher.name} on ${classToJoin.date}. Your session timings is ${classToJoin.time}. Here is a short description about the class - "${classToJoin.description}".\n\n` +
@@ -105,7 +109,7 @@ router.post("/join-class/:classId", authenticateToken, async (req, res) => {
 
     await transporter.sendMail(mailOptions);
 
-    classToJoin.students.push(studentId);
+    classToJoin.students.push({ studentId: studentId, bookingId: bookingId });
     await classToJoin.save();
 
     
