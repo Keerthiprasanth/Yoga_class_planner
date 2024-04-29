@@ -18,8 +18,8 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-  
       <HomeComponent id="home" />
+      <AsanasAddedByUser></AsanasAddedByUser>
     </div>
   );
 };

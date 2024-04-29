@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Create-session.css'; 
+import Header from '../Header/Header';
 
 const CreateClassSession = () => {
   const [formData, setFormData] = useState({
@@ -56,6 +57,7 @@ const CreateClassSession = () => {
 
   return (
     <div className="background col-12">
+      <Header></Header>
       <div className="class-container col-6">
         <h2>Create Class Session</h2>
 

@@ -28,6 +28,8 @@ const TeacherSignup = () => {
     birthDate: '',
   });
 
+  const [backendError, setBackendError] = useState('');
+
   const [flag, setFlag] = useState(0); // Initialize flag
 
   const handleChange = (e) => {
@@ -87,6 +89,7 @@ const TeacherSignup = () => {
         navigate("/teacher-login");
       } catch (error) {
         console.error("Error ", error);
+        setBackendError(error.response.data.message); 
       }
     } else {
       alert("Please fix the errors");
@@ -97,6 +100,7 @@ const TeacherSignup = () => {
     <div className="container col-12">
       <div className="card">
         <h5>Register</h5>
+        {backendError && <div className="error">{backendError}</div>} 
         <form onSubmit={handleSubmit}>
           <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Username" required></input>
           <input type="text" name="email" value={formData.email} onChange={handleChange} placeholder="Email" required></input>

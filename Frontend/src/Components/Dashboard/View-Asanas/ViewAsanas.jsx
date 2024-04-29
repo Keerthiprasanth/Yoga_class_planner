@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import './ViewAsanas.css'; 
-import AsanasAddedByUser from "../AsasnsAddedByUser/AsanasAddedByUser";
+import HeaderComponent from "../Header/Header";
 
 const ViewAsanas = () => {
   const [asanas, setAsanas] = useState([]);
@@ -22,7 +22,6 @@ const ViewAsanas = () => {
     setVisibleAsanas(prev => prev + 3);
   }
 
-  // Filter asanas based on search query
   const filteredAsanas = asanas.filter(asana => 
     asana.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -30,7 +29,7 @@ const ViewAsanas = () => {
   return (
 
     <div className="asanas-container col-12">
-      <AsanasAddedByUser></AsanasAddedByUser>
+  
       <h3>Asasnas</h3>
       <input
         type="text"

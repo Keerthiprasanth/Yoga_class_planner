@@ -79,7 +79,7 @@ const Header = () => {
               <a className="nav-link" href="/dashboard" >Home</a>
             </li>
             <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-              <a className="nav-link" href="/viewAsanas">View Asanas</a>
+              <a className="nav-link" href="/Viewasanas">View Asanas</a>
             </li>
   
             <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
@@ -99,7 +99,14 @@ const Header = () => {
                 <span className='col-5'>{user ? capitalizeFirstLetter(user) : 'Profile'}</span>
               </a>
               <div className={`dropdown-menu col-5  ${dropdownOpen ? 'show' : ''}`}>
-                <a href='/teacher-settings' className='col-5'>Settings</a>
+               <ul>
+                <li>
+                <a href='/teacher-settings' className='col-5'>Profile</a>
+                </li>
+                <li>
+                <a href='/teacher-settings' className='col-5'>Logout</a>
+                </li>
+                </ul>
               </div>
             </div>
             

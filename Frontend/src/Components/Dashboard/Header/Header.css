@@ -9,6 +9,9 @@
     width: 100%;
     z-index: 1000; 
 }
+ul, li{
+	text-decoration: none;
+}
 
 .navigation-wrap{
 	z-index: 1000;
