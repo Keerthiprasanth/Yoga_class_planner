@@ -121,4 +121,16 @@ router.delete("/delete/:id", authenticateToken, async (req, res) => {
   }
 });
 
+router.get("/teacher-sequences", authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.TeacherId;
+
+    const sequences = await Sequence.find({ addedById: userId }).populate('asanas');
+
+    res.status(200).json({ sequences });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 module.exports = router;

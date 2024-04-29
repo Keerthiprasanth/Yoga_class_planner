@@ -26,6 +26,9 @@ const classSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    venue: {
+      type: String
+    },
     teacher: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Teacher",

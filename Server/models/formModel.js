@@ -21,7 +21,21 @@ const formDataSchema = new mongoose.Schema({
     yogaStyles: String,
     goals: String,
     avoidPoses: String
-  }
+  },
+  suggestedSequences: [
+    {
+      suggestedBy: {
+        type: String
+      },
+      sequenceId: {
+        type: String
+      },
+      suggestedAt: {
+        type: Date,
+        default: Date.now
+      }
+    }
+  ],
 }, { timestamps: true });
 
 const FormData = mongoose.model('FormData', formDataSchema);
