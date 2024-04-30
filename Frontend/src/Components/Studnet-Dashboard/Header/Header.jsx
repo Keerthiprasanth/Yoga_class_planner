@@ -47,7 +47,7 @@ const StudentHeader = () => {
   return (
     <div className="student-header">
       <nav className="navbar navbar-expand-md navbar-light bg-light">
-        <a className="navbar-brand" href="#">
+        <a className="navbar-brand" href="#" style={{color:"black"}}>
           Yoga Planner
         </a>
         <button

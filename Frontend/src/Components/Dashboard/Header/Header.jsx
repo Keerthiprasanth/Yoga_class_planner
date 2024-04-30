@@ -68,7 +68,7 @@ const Header = () => {
   return (
     <div className={`header ${isHeaderFixed ? 'fixed-header' : ''}`}>
       <nav className="navbar navbar-expand-md navbar-light bg-light">
-        <a className="navbar-brand col-2" href="#">Yoga Planner</a>
+        <a className="navbar-brand col-2" href="#" style={{color:"black"}}>Yoga Planner</a>
         <button 
           className="navbar-toggler" 
           type="button" 
