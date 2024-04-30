@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './Header.css'; // Import your CSS file
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const [user, setUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isHeaderFixed, setIsHeaderFixed] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = sessionStorage.getItem('user');
@@ -54,6 +56,13 @@ const Header = () => {
 
   const handleProfileUpdate = (updatedName) => {
     setUser(updatedName);
+  };
+
+  const handleLogout = () => {
+    // Clear JWT token from session storage
+    sessionStorage.removeItem('token');
+    // Navigate to teacher signup page
+    navigate('/teacher-login');
   };
 
   return (
@@ -104,7 +113,7 @@ const Header = () => {
                 <a href='/teacher-settings' className='col-5'>Profile</a>
                 </li>
                 <li>
-                <a href='/teacher-settings' className='col-5'>Logout</a>
+                <button onClick={handleLogout} className='col-12' style={{background:"black", color :"white"}}>Logout</button>
                 </li>
                 </ul>
               </div>

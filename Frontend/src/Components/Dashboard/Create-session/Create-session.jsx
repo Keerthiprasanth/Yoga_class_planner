@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './Create-session.css'; 
 import Header from '../Header/Header';
+import SessionCreatedByUser from './SessionCreatedByUser/SessionCreatedByUser';
 
 const CreateClassSession = () => {
   const [formData, setFormData] = useState({
@@ -130,6 +131,8 @@ const CreateClassSession = () => {
           </div>
         </form>
       </div>
+      <p>Session created by you</p>
+      <SessionCreatedByUser></SessionCreatedByUser>
     </div>
   );
 };

@@ -46,6 +46,7 @@ const ViewAsanas = () => {
             <div className="card-body">
               <h5 className="card-title">asana name : {asana.name}</h5>
               <p className="card-text">asana description : {asana.description}</p>
+              <p className="card-added-by">Added By: {asana.addedByName}</p>
               <p>Benifits</p>
               {asana.benefits.length > 0 && (
                 <ul>

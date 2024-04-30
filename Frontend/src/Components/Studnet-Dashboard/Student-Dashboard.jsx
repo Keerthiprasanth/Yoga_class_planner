@@ -1,5 +1,6 @@
 import StudentHeader from "./Header/Header";
 import StudentHome from "./Home/Home";
+import StudentClasses from "./StudentClassesJoined/Student-class";
 
 const StudentDashboard = () => {
     return(
@@ -10,6 +11,9 @@ const StudentDashboard = () => {
             <br></br>
             <div className="student-home">
                 <StudentHome></StudentHome>
+            </div>
+            <div>
+                <StudentClasses></StudentClasses>
             </div>
         </div>
     )
