@@ -3,6 +3,8 @@ const router = express.Router();
 
 const FormData = require("../models/formModel");
 const Class = require('../models/classModel');
+const Sequence = require('../models/sequenceModel');
+const Teacher = require('../models/teacherModel');
 const authenticateToken = require("../Middleware/authRequest");
 
 router.post("/submit-form", authenticateToken, async (req, res) => {
@@ -60,6 +62,40 @@ router.get('/class-forms/:classId', async (req, res) => {
   } catch (error) {
     console.error('Error fetching class forms:', error.message);
     res.status(400).json({ error: error.message });
+  }
+});
+
+router.post("/suggest-sequence/:submittedBy", authenticateToken, async (req, res) => {
+  try {
+    const { submittedBy } = req.params;
+    const { sequenceIds } = req.body;
+    const teacherId = req.user.TeacherId;
+
+    const formData = await FormData.findOne({ submittedBy });
+    if (!formData) {
+      return res.status(404).json({ message: "Form not found" });
+    }
+
+    const teacher = await Teacher.findById(teacherId);
+    if (!teacher) {
+      return res.status(404).json({ message: "Teacher not found" });
+    }
+
+    const sequences = await Sequence.find({ _id: { $in: sequenceIds } });
+    if (sequences.length !== sequenceIds.length) {
+      return res.status(404).json({ message: "One or more sequences not found" });
+    }
+
+    formData.suggestedSequences.push(
+      ...sequenceIds.map(sequenceId => ({ suggestedBy: teacherId, sequenceId }))
+    );
+
+    await formData.save();
+
+    res.status(200).json({ message: "Sequences suggested successfully" });
+  } catch (error) {
+    console.error('Error suggesting sequences:', error.message);
+    res.status(500).json({ error: error.message });
   }
 });
 

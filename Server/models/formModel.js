@@ -25,10 +25,12 @@ const formDataSchema = new mongoose.Schema({
   suggestedSequences: [
     {
       suggestedBy: {
-        type: String
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Teacher'
       },
       sequenceId: {
-        type: String
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Sequence'
       },
       suggestedAt: {
         type: Date,
