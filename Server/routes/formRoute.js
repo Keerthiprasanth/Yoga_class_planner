@@ -12,15 +12,22 @@ router.post("/submit-form", authenticateToken, async (req, res) => {
     const formData = req.body;
     const submittedBy = req.user.StudentId;
 
-    const newFormData = new FormData({ ...formData, submittedBy });
+    let existingFormData = await FormData.findOne({ submittedBy });
 
-    await newFormData.save();
-
-    res.status(201).json({ message: "Form data submitted successfully" });
+    if (existingFormData) {
+      existingFormData.set(formData);
+      await existingFormData.save();
+      res.status(200).json({ message: "Form data updated successfully" });
+    } else {
+      const newFormData = new FormData({ ...formData, submittedBy });
+      await newFormData.save();
+      res.status(201).json({ message: "Form data submitted successfully" });
+    }
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
+
 
 router.get("/view-forms", async (req, res) => {
   try {
@@ -32,18 +39,18 @@ router.get("/view-forms", async (req, res) => {
   }
 });
 
-router.get('/student-forms', authenticateToken, async (req, res) => {
-  try {
-    const { studentId } = req.user.StudentId;
+// router.get('/student-forms', authenticateToken, async (req, res) => {
+//   try {
+//     const { studentId } = req.user.StudentId;
 
-    const forms = await FormData.find({ submittedBy: studentId });
+//     const forms = await FormData.find({ submittedBy: studentId });
 
-    res.status(200).json({ forms });
-  } catch (error) {
-    console.error('Error fetching student forms:', error.message);
-    res.status(400).json({ error: error.message });
-  }
-});
+//     res.status(200).json({ forms });
+//   } catch (error) {
+//     console.error('Error fetching student forms:', error.message);
+//     res.status(400).json({ error: error.message });
+//   }
+// });
 
 router.get('/class-forms/:classId', async (req, res) => {
   try {
@@ -96,6 +103,25 @@ router.post("/suggest-sequence/:submittedBy", authenticateToken, async (req, res
   } catch (error) {
     console.error('Error suggesting sequences:', error.message);
     res.status(500).json({ error: error.message });
+  }
+});
+
+router.get('/student-forms', authenticateToken, async (req, res) => {
+  try {
+    const { studentId } = req.user.StudentId;
+
+    const forms = await FormData.find({ submittedBy: studentId }).populate({
+      path: 'suggestedSequences.sequenceId',
+      populate: {
+        path: 'suggestedSequences.suggestedBy',
+        select: 'name', 
+      }
+    });
+
+    res.status(200).json({ forms });
+  } catch (error) {
+    console.error('Error fetching student forms:', error.message);
+    res.status(400).json({ error: error.message });
   }
 });
 

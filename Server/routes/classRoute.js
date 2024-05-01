@@ -120,6 +120,33 @@ router.post("/join-class/:classId", authenticateToken, async (req, res) => {
   }
 });
 
+router.delete("/withdraw-class/:classId", authenticateToken, async (req, res) => {
+  try {
+    const { classId } = req.params;
+    const studentId = req.user.StudentId;
+
+    const classToWithdraw = await Class.findById(classId);
+
+    if (!classToWithdraw) {
+      return res.status(404).json({ message: "Class not found" });
+    }
+
+    const isEnrolled = classToWithdraw.students.some(student => student.studentId.equals(studentId));
+
+    if (!isEnrolled) {
+      return res.status(400).json({ message: "Student is not enrolled in the class" });
+    }
+
+    classToWithdraw.students = classToWithdraw.students.filter(student => !student.studentId.equals(studentId));
+    await classToWithdraw.save();
+
+    res.status(200).json({ message: "Student withdrew from the class successfully" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+
 router.get("/get-classes", async (req, res) => {
   try {
     const sessions = await Class.find()
