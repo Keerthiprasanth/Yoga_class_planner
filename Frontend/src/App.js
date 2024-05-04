@@ -14,10 +14,10 @@ import AsanasAddedByUser from './Components/Dashboard/AsasnsAddedByUser/AsanasAd
 import ViewAsanas from './Components/Dashboard/View-Asanas/ViewAsanas.jsx';
 import CreateClassSession from './Components/Dashboard/Create-session/Create-session.jsx';
 import Header from './Components/Dashboard/Header/Header.jsx';
+import ViewAsanasinTeacher from './Components/Dashboard/ViewAsanasinTeacher/ViewAsanasinteacher.jsx';
 function App() {
   return (
     <div>
-    <Header></Header>
     <Router>
       <Routes>
       <Route path="/" element = { <RedirectComponent></RedirectComponent>}></Route>
@@ -29,6 +29,7 @@ function App() {
       <Route path='/student-dashboard' element={<StudentDashboard></StudentDashboard>}></Route>
       <Route path='/teacher-settings' element={<TeacherSettings></TeacherSettings>}></Route>
       <Route path='/asanasAddedByUser' element={ <AsanasAddedByUser></AsanasAddedByUser>}></Route>
+      <Route path='/Viewasanas' element={<ViewAsanasinTeacher></ViewAsanasinTeacher>}></Route>
       <Route path='/viewAsanas' element={<ViewAsanas id="view-asanas" />
 }></Route>
 <Route path='/createClssSession' element={<CreateClassSession id="create-session" />

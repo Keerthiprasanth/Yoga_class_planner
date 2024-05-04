@@ -35,6 +35,7 @@ const StudentHome = () => {
           .sort((a, b) => new Date(a.date + 'T' + a.time) - new Date(b.date + 'T' + b.time));
         setClassesData(sortedData);
         setDisplayedClasses(sortedData.slice(startIndex, startIndex + classesPerPage));
+
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -72,6 +73,7 @@ const StudentHome = () => {
       setSuccessMessage('Class booked successfully.');
       setErrorMessage(''); 
       console.log('Success:', response.data);
+      window.location.reload()
     } catch (error) {
       setSuccessMessage(''); 
       setErrorMessage('Error booking class. Please try again.');
@@ -96,7 +98,8 @@ const StudentHome = () => {
               <p>{classItem.description}</p>
               <p>Date: {new Date(classItem.date).toLocaleDateString()}</p>
               <p>Time: {classItem.time}</p>
-              <p>Available Capacity: {classItem.maxCapacity - classItem.students.length}</p>
+              <p>Available Capacity: {classItem.maxCapacity - (classItem.students ? classItem.students.length : 0)}</p>
+
               <Button className='button' onClick={() => setShowFormsModal(true)}>Forms</Button>
               <br></br>
               <button className="button" onClick={() => bookSession(classItem._id)}>Book session</button>

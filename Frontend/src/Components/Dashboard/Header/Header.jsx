@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './Header.css'; // Import your CSS file
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const [user, setUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isHeaderFixed, setIsHeaderFixed] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = sessionStorage.getItem('user');
@@ -56,10 +58,17 @@ const Header = () => {
     setUser(updatedName);
   };
 
+  const handleLogout = () => {
+    // Clear JWT token from session storage
+    sessionStorage.removeItem('token');
+    // Navigate to teacher signup page
+    navigate('/teacher-login');
+  };
+
   return (
     <div className={`header ${isHeaderFixed ? 'fixed-header' : ''}`}>
       <nav className="navbar navbar-expand-md navbar-light bg-light">
-        <a className="navbar-brand col-2" href="#">Yoga Planner</a>
+        <a className="navbar-brand col-2" href="#" style={{color:"black"}}>Yoga Planner</a>
         <button 
           className="navbar-toggler" 
           type="button" 
@@ -79,7 +88,7 @@ const Header = () => {
               <a className="nav-link" href="/dashboard" >Home</a>
             </li>
             <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-              <a className="nav-link" href="/viewAsanas">View Asanas</a>
+              <a className="nav-link" href="/Viewasanas">View Asanas</a>
             </li>
   
             <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
@@ -99,7 +108,14 @@ const Header = () => {
                 <span className='col-5'>{user ? capitalizeFirstLetter(user) : 'Profile'}</span>
               </a>
               <div className={`dropdown-menu col-5  ${dropdownOpen ? 'show' : ''}`}>
-                <a href='/teacher-settings' className='col-5'>Settings</a>
+               <ul>
+                <li>
+                <a href='/teacher-settings' className='col-5'>Profile</a>
+                </li>
+                <li>
+                <button onClick={handleLogout} className='col-12' style={{background:"black", color :"white"}}>Logout</button>
+                </li>
+                </ul>
               </div>
             </div>
             

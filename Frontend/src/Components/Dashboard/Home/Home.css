@@ -9,10 +9,13 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
     text-align: center;
     color: #ffffff; 
+  }
+  .username-zone{
+    background-color: red;
   }
   .dropdown-menu {
 		left: auto;
@@ -27,13 +30,18 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('../../../assests/background.jpg'); 
+    background-image: url('../../../assests/background'); 
     background-size: cover;
     background-position: center;
     
   }
   
-
+  .navbar-light .navbar-brand {
+    color: white;
+}
+.bg-light {
+  background-color: transparent !important;
+}
   
   .brand {
     font-size: 48px;

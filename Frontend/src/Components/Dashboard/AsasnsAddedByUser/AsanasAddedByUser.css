@@ -21,7 +21,7 @@
   .card-img-top {
     width: 334px;
     height: 314px;
-    object-fit: inherit;
+    object-fit: cover;
   }
   
   .card-body {
