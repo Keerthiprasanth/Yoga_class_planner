@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
 import $ from 'jquery'; // Import jQuery for modal handling
 import ViewAsanasComponent from '../View-Asanas/ViewAsanas';
+import Header from '../Header/Header';
 
 
 const Home = () => {
@@ -54,21 +55,20 @@ const Home = () => {
     formData.append('benefits', asanaBenefits);
     formData.append('image', asanaImage);
 
-    // Set up headers with the bearer token
+
     const headers = {
       'Authorization': `Bearer ${token}`,
-      'Content-Type': 'multipart/form-data' // Set content type to multipart/form-data for file upload
+      'Content-Type': 'multipart/form-data' 
     };
 
-    // Make API request using Axios
+
     axios.post('http://localhost:3001/api/asana/add-asana', formData, {
       headers: headers
     })
     .then(response => {
       console.log('API Response:', response.data);
-      // Display alert box upon successful image upload
-      alert('Image added successfully!');
-      // Close the modal
+      alert('Asanas added successfully!');
+
       $('#exampleModalLong').modal('hide');
     })
     .catch(error => {
@@ -79,12 +79,9 @@ const Home = () => {
 
   return (
     <div className="dashboard">
+      <Header></Header>
     <div className="home" >
-      <div className="col-5 username-zone" style={{
-   
-        justifyContent: "left",
-        padding: "100px"
-      }}>
+      <div className="username-zone col-5" >
       
         <div className="app-name">
           Welcome to Yoga Planner <h2> {user ? capitalizeFirstLetter(user) : ''} </h2>

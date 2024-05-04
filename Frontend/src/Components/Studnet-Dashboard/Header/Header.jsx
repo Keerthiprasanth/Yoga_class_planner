@@ -47,7 +47,7 @@ const StudentHeader = () => {
   return (
     <div className="student-header">
       <nav className="navbar navbar-expand-md navbar-light bg-light">
-        <a className="navbar-brand" href="#">
+        <a className="navbar-brand" href="#" style={{color:"black"}}>
           Yoga Planner
         </a>
         <button
@@ -70,17 +70,7 @@ const StudentHeader = () => {
           id="navbarSupportedContent"
         >
           <ul className="navbar-nav ml-auto py-4 py-md-0">
-            <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4 d-flex align-items-center">
-              <div className="input-group">
-                <input
-                  type="search"
-                  className="form-control"
-                  placeholder="Search"
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                />
-              </div>
-            </li>
+  
             <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
               <a className="nav-link" href="#">
                 Forms
