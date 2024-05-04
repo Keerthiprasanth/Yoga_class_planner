@@ -125,4 +125,33 @@ router.get('/student-forms', authenticateToken, async (req, res) => {
   }
 });
 
+router.delete("/remove-sequence/:formId/:sequenceId", authenticateToken, async (req, res) => {
+  try {
+    const { formId, sequenceId } = req.params;
+    const teacherId = req.user.TeacherId;
+
+    const formData = await FormData.findById(formId);
+    if (!formData) {
+      return res.status(404).json({ message: "Form not found" });
+    }
+
+    const sequenceIndex = formData.suggestedSequences.findIndex(suggestion => 
+      suggestion.sequenceId.toString() === sequenceId && 
+      suggestion.suggestedBy.toString() === teacherId
+    );
+    if (sequenceIndex === -1) {
+      return res.status(404).json({ message: "Sequence not found in the form or not suggested by the teacher" });
+    }
+
+    formData.suggestedSequences.splice(sequenceIndex, 1);
+
+    await formData.save();
+
+    res.status(200).json({ message: "Sequence removed from the form successfully" });
+  } catch (error) {
+    console.error('Error removing sequence from form:', error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;
