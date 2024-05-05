@@ -28,7 +28,6 @@ router.post("/submit-form", authenticateToken, async (req, res) => {
   }
 });
 
-
 router.get("/view-forms", async (req, res) => {
   try {
     const formData = await FormData.find();
@@ -52,6 +51,7 @@ router.get("/view-forms", async (req, res) => {
 //   }
 // });
 
+//Route to view forms submitted by students of a specific class
 router.get('/class-forms/:classId', async (req, res) => {
   try {
     const { classId } = req.params;
@@ -72,6 +72,7 @@ router.get('/class-forms/:classId', async (req, res) => {
   }
 });
 
+//Teacher suggesting sequence to student
 router.post("/suggest-sequence/:submittedBy", authenticateToken, async (req, res) => {
   try {
     const { submittedBy } = req.params;
@@ -106,6 +107,7 @@ router.post("/suggest-sequence/:submittedBy", authenticateToken, async (req, res
   }
 });
 
+//Route to display student forms and sequence suggestions
 router.get('/student-forms', authenticateToken, async (req, res) => {
   try {
     const { studentId } = req.user.StudentId;
@@ -125,6 +127,7 @@ router.get('/student-forms', authenticateToken, async (req, res) => {
   }
 });
 
+//Remove sequence suggested by a specific teacher to a student
 router.delete("/remove-sequence/:formId/:sequenceId", authenticateToken, async (req, res) => {
   try {
     const { formId, sequenceId } = req.params;
