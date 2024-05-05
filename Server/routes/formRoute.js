@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
 const FormData = require("../models/formModel");
 const Class = require('../models/classModel');
 const Sequence = require('../models/sequenceModel');
@@ -11,9 +10,7 @@ router.post("/submit-form", authenticateToken, async (req, res) => {
   try {
     const formData = req.body;
     const submittedBy = req.user.StudentId;
-
     let existingFormData = await FormData.findOne({ submittedBy });
-
     if (existingFormData) {
       existingFormData.set(formData);
       await existingFormData.save();

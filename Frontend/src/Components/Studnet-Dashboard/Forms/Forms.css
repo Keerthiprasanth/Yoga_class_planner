@@ -1,6 +1,7 @@
 .form-container {
     max-width: 600px;
     margin: 0 auto;
+  
 }
 
 .form-group {
@@ -15,7 +16,7 @@ label {
 input[type="text"] {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #000000;
     border-radius: 5px;
     font-size: 16px;
     margin-bottom: 10px;
@@ -23,6 +24,6 @@ input[type="text"] {
 
 input[type="text"]:focus {
     outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    border-color: #000000;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
