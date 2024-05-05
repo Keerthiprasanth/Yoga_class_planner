@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Ensure Bootstrap JS is imported
+import Forms from '../Forms/Forms';
 
 const StudentHeader = () => {
   const [user, setUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [showFormsModal, setShowFormsModal] = useState(false); 
 
   useEffect(() => {
     const storedUser = sessionStorage.getItem('user');
-    console.log('Stored User:', storedUser);
     if (storedUser) {
       try {
         const parsedUser = JSON.parse(storedUser);
@@ -44,6 +45,11 @@ const StudentHeader = () => {
     }
   };
 
+  // Function to toggle Forms modal visibility
+  const toggleFormsModal = () => {
+    setShowFormsModal(!showFormsModal);
+  };
+
   return (
     <div className="student-header">
       <nav className="navbar navbar-expand-md navbar-light bg-light">
@@ -72,7 +78,7 @@ const StudentHeader = () => {
           <ul className="navbar-nav ml-auto py-4 py-md-0">
   
             <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-              <a className="nav-link" href="#">
+              <a className="nav-link" href="#" onClick={toggleFormsModal} data-toggle="modal" data-target="#formsModal">
                 Forms
               </a>
             </li>
@@ -119,6 +125,23 @@ const StudentHeader = () => {
             </li>
           ))}
         </ul>
+      </div>
+
+
+      <div className={`modal fade ${showFormsModal ? 'show' : ''}`} id="formsModal" tabIndex="-1" role="dialog">
+        <div className="modal-dialog" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Forms</h5>
+              <button type="button" className="close" onClick={toggleFormsModal} aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <Forms />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

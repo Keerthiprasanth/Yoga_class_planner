@@ -15,6 +15,7 @@ import ViewAsanas from './Components/Dashboard/View-Asanas/ViewAsanas.jsx';
 import CreateClassSession from './Components/Dashboard/Create-session/Create-session.jsx';
 import Header from './Components/Dashboard/Header/Header.jsx';
 import ViewAsanasinTeacher from './Components/Dashboard/ViewAsanasinTeacher/ViewAsanasinteacher.jsx';
+import Forms from './Components/Studnet-Dashboard/Forms/Forms.jsx';
 function App() {
   return (
     <div>
@@ -32,6 +33,7 @@ function App() {
       <Route path='/Viewasanas' element={<ViewAsanasinTeacher></ViewAsanasinTeacher>}></Route>
       <Route path='/viewAsanas' element={<ViewAsanas id="view-asanas" />
 }></Route>
+<Route path='/forms' element={<Forms></Forms>}></Route>
 <Route path='/createClssSession' element={<CreateClassSession id="create-session" />
 }></Route>
                   </Routes>
