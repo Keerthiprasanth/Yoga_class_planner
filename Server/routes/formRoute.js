@@ -27,7 +27,7 @@ router.post("/submit-form", authenticateToken, async (req, res) => {
 
 router.get("/view-forms", async (req, res) => {
   try {
-    const formData = await FormData.find();
+    const formData = await FormData.find().populate('submittedBy', 'name email');
 
     res.status(200).json({ formData });
   } catch (error) {
