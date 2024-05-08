@@ -154,7 +154,7 @@ router.post(
   }
 );
 
-//Route to display student forms and sequence suggestions
+//Route to display logged in student's form and sequence suggestions
 router.get("/student-forms", authenticateToken, async (req, res) => {
   try {
     const studentId = req.user.StudentId;
