@@ -191,6 +191,43 @@ router.get("/student-forms", authenticateToken, async (req, res) => {
   }
 });
 
+////Route to display logged in student's form and sequence suggestions
+router.get("/student-forms/:studentId", async (req, res) => {
+  try {
+    const { studentId } = req.params;
+
+    console.log(studentId);
+
+    const forms = await FormData.find({ submittedBy: studentId })
+      .populate({
+        path: "submittedBy",
+        select: "name email",
+      })
+      .populate({
+        path: "suggestedSequences",
+        populate: [
+          {
+            path: "sequenceId",
+            select: "name description benefits addedByName addedById",
+            populate: {
+              path: "asanas",
+              select: "name description benefits image addedByName addedById",
+            },
+          },
+          {
+            path: "suggestedBy",
+            select: "name email",
+          },
+        ],
+      });
+
+    res.status(200).json({ forms });
+  } catch (error) {
+    console.error("Error fetching student forms:", error.message);
+    res.status(400).json({ error: error.message });
+  }
+});
+
 //Remove sequence suggested by a specific teacher to a student
 router.delete(
   "/remove-sequence/:formId/:sequenceId",
