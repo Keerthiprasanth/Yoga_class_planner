@@ -20,7 +20,7 @@ const StudentClasses = () => {
       } catch (error) {
         console.error('Error fetching classes:', error);
       }
-    };
+    };  
 
     fetchClasses();
   }, []);

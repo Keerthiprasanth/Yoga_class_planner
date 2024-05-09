@@ -16,6 +16,7 @@ const StudentHome = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showFormsModal, setShowFormsModal] = useState(false); 
+  const [teacherNames, setTeacherNames] = useState({}); // State to store teacher names
   const classesPerPage = 3;
 
   useEffect(() => {
@@ -36,6 +37,18 @@ const StudentHome = () => {
         setClassesData(sortedData);
         setDisplayedClasses(sortedData.slice(startIndex, startIndex + classesPerPage));
 
+      
+        const teacherIds = sortedData.map(item => item.teacher);
+        const namesPromises = teacherIds.map(teacherId =>
+          axios.get(`http://localhost:3001/api/teacher/${teacherId}`, config)
+        );
+        const namesResponses = await Promise.all(namesPromises);
+        const teacherNamesMap = {};
+        namesResponses.forEach((response, index) => {
+          const teacherName = response.data.name;
+          teacherNamesMap[teacherIds[index]] = teacherName;
+        });
+        setTeacherNames(teacherNamesMap);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -73,7 +86,7 @@ const StudentHome = () => {
       setSuccessMessage('Class booked successfully.');
       setErrorMessage(''); 
       console.log('Success:', response.data);
-      window.location.reload()
+     
     } catch (error) {
       setSuccessMessage(''); 
       setErrorMessage('Error booking class. Please try again.');
@@ -84,7 +97,7 @@ const StudentHome = () => {
   return (
     <div className="student-home">
       <div className="view-asanas">
-      <ViewAsanas></ViewAsanas>
+        <ViewAsanas></ViewAsanas>
       </div>
       {successMessage && <div className="success-message">{successMessage}</div>}
       {errorMessage && <div className="error-message">{errorMessage}</div>}
@@ -94,10 +107,11 @@ const StudentHome = () => {
           console.log('Class ID:', classItem._id); 
           return (
             <div className="class-box" key={classItem.id} onContextMenu={handleContextMenu}>
-               <h2>{classItem.className}</h2>
+              <h2>{classItem.className}</h2>
               <p>{classItem.description}</p>
               <p>Date: {new Date(classItem.date).toLocaleDateString()}</p>
               <p>Time: {classItem.time}</p>
+              <p>Teacher: {teacherNames[classItem.teacher]}</p> {/* Display teacher's name */}
               <p>Available Capacity: {classItem.maxCapacity - (classItem.students ? classItem.students.length : 0)}</p>
 
               <Button className='button' onClick={() => setShowFormsModal(true)}>Forms</Button>
@@ -123,8 +137,6 @@ const StudentHome = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-
-  
     </div>
   );
 };

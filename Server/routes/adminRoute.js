@@ -7,7 +7,7 @@ const Student = require("../models/studentModel");
 const Asana = require("../models/asanaModel");
 const Class = require("../models/classModel");
 
-//Student
+
 router.post("/student/register", async (req, res) => {
   console.log("Request Body:", req.body);
   try {
@@ -17,7 +17,7 @@ router.post("/student/register", async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
+    
     const newStudent = new Student({
       name: req.body.name,
       email: req.body.email,
