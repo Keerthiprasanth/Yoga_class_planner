@@ -73,7 +73,7 @@ router.post("/join-class/:classId", authenticateToken, async (req, res) => {
       return res.status(400).json({ message: "Class is already full" });
     }
 
-    if (classToJoin.students.includes(studentId)) {
+    if (classToJoin.students.some(student => student.studentId.toString() === studentId)) {
       return res
         .status(400)
         .json({ message: "Student is already enrolled in the class" });

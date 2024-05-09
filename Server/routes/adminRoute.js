@@ -1,12 +1,32 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const Teacher = require("../models/teacherModel");
 const Student = require("../models/studentModel");
 const Asana = require("../models/asanaModel");
 const Class = require("../models/classModel");
 
+router.post("/login", async (req, res) => {
+  try {
+    if (req.body.password !== process.env.ADMIN_PASSWORD) {
+      return res.status(400).json({ message: "Invalid password" });
+    }
+
+    const token = jwt.sign(
+      { Admin: process.env.ADMIN_ID },
+      process.env.SECRET,
+      {
+        expiresIn: "2h",
+      }
+    );
+
+    res.status(200).json({ token });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
 
 router.post("/student/register", async (req, res) => {
   console.log("Request Body:", req.body);
