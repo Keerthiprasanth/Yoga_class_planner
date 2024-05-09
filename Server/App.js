@@ -35,5 +35,5 @@ app.use("/api/teacher", teacher);
 app.use("/api/asana", asana);
 app.use("/api/sequence", sequence);
 app.use("/api/class",classRoute);
-app.use("api/admin", admin);
+app.use("/api/admin", admin);
 app.use('/api/form', formData);
