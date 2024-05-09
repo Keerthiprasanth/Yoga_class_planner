@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-import React, { useState } from 'react';
-import axios from 'axios';
 
 const Forms = () => {
   const initialFormData = {
