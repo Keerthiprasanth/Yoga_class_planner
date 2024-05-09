@@ -15,6 +15,8 @@ import ViewAsanas from './Components/Dashboard/View-Asanas/ViewAsanas.jsx';
 import CreateClassSession from './Components/Dashboard/Create-session/Create-session.jsx';
 import Header from './Components/Dashboard/Header/Header.jsx';
 import ViewAsanasinTeacher from './Components/Dashboard/ViewAsanasinTeacher/ViewAsanasinteacher.jsx';
+import AdminDashboard from './Components/Admin/AdminDashboard.jsx';
+
 function App() {
   return (
     <div>
@@ -34,6 +36,7 @@ function App() {
 }></Route>
 <Route path='/createClssSession' element={<CreateClassSession id="create-session" />
 }></Route>
+<Route path='/AdminDashboard' element={<AdminDashboard></AdminDashboard>}></Route>
                   </Routes>
     </Router>
     </div>  
