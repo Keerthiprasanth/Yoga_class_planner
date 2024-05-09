@@ -211,7 +211,7 @@ router.get("/teacher-classes", authenticateToken, async (req, res) => {
   try {
     const userId = req.user.TeacherId;
 
-    const classes = await Class.find({ teacher: userId });
+    const classes = await Class.find({ teacher: userId }).populate('teacher students.studentId', 'name email');
 
     res.status(200).json({ classes });
   } catch (error) {
@@ -223,12 +223,13 @@ router.get("/student-classes", authenticateToken, async (req, res) => {
   try {
     const userId = req.user.StudentId;
 
-    const classes = await Class.find({ students: userId });
+    const classes = await Class.find({ 'students.studentId': userId }).populate('teacher students.studentId', 'name email');
 
     res.status(200).json({ classes });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
+
 
 module.exports = router;
