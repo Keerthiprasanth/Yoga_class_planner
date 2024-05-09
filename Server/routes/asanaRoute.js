@@ -42,6 +42,11 @@ router.post(
         return res.status(400).json({ message: "No files uploaded" });
       }
 
+      const existingAsana = await Asana.findOne({ name: req.body.name, addedById: userId });
+      if (existingAsana) {
+        return res.status(400).json({ message: "You have already added an asana with the same name" });
+      }
+      
       console.log("File buffer check - ", req.files);
 
       const uploadResults = await Promise.all(

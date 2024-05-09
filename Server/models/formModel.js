@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 const formDataSchema = new mongoose.Schema({
   submittedBy: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Student',
     required: true,
   },
   generalHealth: {
