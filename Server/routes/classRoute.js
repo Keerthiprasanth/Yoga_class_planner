@@ -73,7 +73,7 @@ router.post("/join-class/:classId", authenticateToken, async (req, res) => {
       return res.status(400).json({ message: "Class is already full" });
     }
 
-    if (classToJoin.students.some(student => student.studentId.toString() === studentId)) {
+    if (classToJoin.students.includes(studentId)) {
       return res
         .status(400)
         .json({ message: "Student is already enrolled in the class" });
@@ -111,9 +111,6 @@ router.post("/join-class/:classId", authenticateToken, async (req, res) => {
 
     classToJoin.students.push({ studentId: studentId, bookingId: bookingId });
     await classToJoin.save();
-
-    
-
     res.status(200).json({ message: "Student joined the class successfully" });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -211,9 +208,7 @@ router.delete("/delete-class/:classId", authenticateToken, async (req, res) => {
 router.get("/teacher-classes", authenticateToken, async (req, res) => {
   try {
     const userId = req.user.TeacherId;
-
-    const classes = await Class.find({ teacher: userId }).populate('teacher students.studentId', 'name email');
-
+    const classes = await Class.find({ teacher: userId }).populate('teacher students.studentId', 'name email')
     res.status(200).json({ classes });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -224,14 +219,11 @@ router.get("/teacher-classes", authenticateToken, async (req, res) => {
 router.get("/student-classes", authenticateToken, async (req, res) => {
   try {
     const userId = req.user.StudentId;
-
-    const classes = await Class.find({ 'students.studentId': userId }).populate('teacher students.studentId', 'name email');
-
+    const classes = await Class.find({ 'students.studentId' : userId });
     res.status(200).json({ classes });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
-
 
 module.exports = router;
