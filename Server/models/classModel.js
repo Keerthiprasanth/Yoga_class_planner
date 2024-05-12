@@ -27,7 +27,8 @@ const classSchema = new mongoose.Schema(
       required: true,
     },
     venue: {
-      type: String
+      type: String,
+      required: true
     },
     teacher: {
       type: mongoose.Schema.Types.ObjectId,
