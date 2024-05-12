@@ -17,14 +17,7 @@ const sequenceSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Asana'
   }],
-  addedByName: {
-    type: String,
-    required: true,
-  },
-  addedById: {
-    type: String,
-    required: true,
-  }
+
 });
 
 const Sequence = mongoose.model("Sequence", sequenceSchema);

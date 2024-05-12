@@ -62,7 +62,7 @@ const Header = () => {
     // Clear JWT token from session storage
     sessionStorage.removeItem('token');
     // Navigate to teacher signup page
-    navigate('/teacher-login');
+    navigate('/');
   };
 
   return (
