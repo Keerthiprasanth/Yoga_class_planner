@@ -110,13 +110,14 @@ const SessionCreatedByUser = () => {
             <Button variant="danger" onClick={() => handleDeleteClick(classItem._id)}>Delete</Button>
             <h3>Students:</h3>
             <ul>
-              {classItem.students.map((student) => (
-                <li key={student.bookingId}>
-                  {student.studentId.name} 
-                  <button onClick={() => handleFormsClick(student.studentId._id)}>Forms</button>
-                  <button onClick={handleOpenSequenceModal}>Suggest Sequence</button>
-                </li>
-              ))}
+            {classItem.students.map((student) => (
+  <li key={student.bookingId}>
+    {student.studentId && student.studentId.name} {/* Add conditional check */}
+    <button onClick={() => handleFormsClick(student.studentId && student.studentId._id)}>Forms</button> {/* Add conditional check */}
+    <button onClick={handleOpenSequenceModal}>Suggest Sequence</button>
+  </li>
+))}
+
             </ul>
           </div>
         ))}
