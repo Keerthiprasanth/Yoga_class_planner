@@ -71,12 +71,12 @@ router.get('/class-forms/:classId', async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+
+//student end
 router.get("/student-forms/:studentId", async (req, res) => {
   try {
     const { studentId } = req.params;
-
     console.log(studentId);
-
     const forms = await FormData.find({ submittedBy: studentId })
       .populate({
         path: "submittedBy",

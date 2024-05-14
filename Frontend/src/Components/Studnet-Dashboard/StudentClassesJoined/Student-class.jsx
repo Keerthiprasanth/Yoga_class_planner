@@ -33,17 +33,32 @@ const StudentClasses = () => {
   const handleDeleteConfirm = async () => {
     try {
       const token = sessionStorage.getItem('token');
-      await axios.delete(`http://localhost:3001/api/class/delete-class/${classToDelete}`, {
+      await axios.delete(`http://localhost:3001/api/class/withdraw-class/${classToDelete}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
-      // Remove the deleted class from the state
+      // Remove the withdrawn class from the state
       setClasses(classes.filter(classItem => classItem._id !== classToDelete));
       // Close the modal
       setShowDeleteModal(false);
     } catch (error) {
-      console.error('Error deleting class:', error);
+      console.error('Error withdrawing class:', error);
+    }
+  };
+
+  const handleWithdrawClick = async (classId) => {
+    try {
+      const token = sessionStorage.getItem('token');
+      await axios.delete(`http://localhost:3001/api/class/withdraw-class/${classId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      // Remove the withdrawn class from the state
+      setClasses(classes.filter(classItem => classItem._id !== classId));
+    } catch (error) {
+      console.error('Error withdrawing class:', error);
     }
   };
 
@@ -59,10 +74,10 @@ const StudentClasses = () => {
             <p>Time: {classItem.time}</p>
             <p>Duration: {classItem.duration} minutes</p>
             <p>Max Capacity: {classItem.maxCapacity}</p>
+            <Button variant="danger" onClick={() => handleWithdrawClick(classItem._id)}>Withdraw</Button>
           </div>
         ))}
       </div>
-
     </div>
   );
 };

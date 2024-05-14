@@ -19,7 +19,6 @@ const SessionCreatedByUser = () => {
     addedById: ''
   });
   const [sequences, setSequences] = useState([]);
-
   useEffect(() => {
     const fetchClasses = async () => {
       try {

@@ -17,22 +17,11 @@ const AdminStudent = () => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
-  useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        const response = await axios.get('/api/all-students');
-        setStudents(response.data);
-      } catch (error) {
-        setError(error.message);
-      }
-    };
 
-    fetchStudents();
-  }, []);
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('/student/register', formData);
+      const response = await axios.post('http://localhost:3001/api/admin/student/register', formData);
       setSuccessMessage(response.data.message);
       setErrorMessage('');
       setFormData({
@@ -41,16 +30,63 @@ const AdminStudent = () => {
         password: '',
         birthDate: ''
       });
+      // Fetch updated list of students
+      fetchStudents();
     } catch (error) {
       setSuccessMessage('');
       setErrorMessage(error.response.data.message);
     }
   };
 
+  const handleUpdate = async (studentId, updatedData) => {
+    try {
+      const response = await axios.put('http://localhost:3001/api/admin/student/update', {
+        studentId,
+        ...updatedData
+      });
+      setSuccessMessage(response.data.message);
+      setErrorMessage('');
+      // Fetch updated list of students
+      fetchStudents();
+    } catch (error) {
+      setSuccessMessage('');
+      setErrorMessage(error.response.data.message);
+    }
+  };
+
+  const handleDelete = async (studentId) => {
+    try {
+      const response = await axios.delete('http://localhost:3001/api/admin/student/delete-profile', {
+        data: { studentId }
+      });
+      setSuccessMessage(response.data.message);
+      setErrorMessage('');
+      // Fetch updated list of students
+      fetchStudents();
+    } catch (error) {
+      setSuccessMessage('');
+      setErrorMessage(error.response.data.message);
+    }
+  };
+
+  const fetchStudents = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/api/admin/all-students');
+      setStudents(response.data);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchStudents();
+  }, []);
+
   return (
     <div className="student-container col-5">
       <h2>Register Student</h2>
       <form onSubmit={handleSubmit}>
+        {/* Form fields for registration */}
         <div className="form-group">
           <label htmlFor="name">Name:</label>
           <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />
@@ -80,10 +116,11 @@ const AdminStudent = () => {
             <div>Name: {student.name}</div>
             <div>Email: {student.email}</div>
             <div>Birth Date: {student.birthDate}</div>
+            <button onClick={() => handleUpdate(student._id, formData)}>Update</button>
+            <button onClick={() => handleDelete(student._id)}>Delete</button>
           </li>
         ))}
       </ul>
-
     </div>
   );
 };
