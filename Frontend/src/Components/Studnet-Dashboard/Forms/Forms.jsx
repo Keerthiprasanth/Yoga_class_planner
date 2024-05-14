@@ -75,7 +75,7 @@ const Forms = () => {
           <label htmlFor="allergies">Allergies</label>
           <input type="text" id="allergies" name="generalHealth.allergies"  onChange={handleChange} />
         </div>
-
+        
         <h2>Physical Health</h2>
         <div className="form-group">
           <label htmlFor="chronicPain">Chronic Pain</label>

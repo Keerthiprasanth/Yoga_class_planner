@@ -12,7 +12,7 @@ router.post("/create-class", authenticateToken, async (req, res) => {
   try {
     const teacherId = req.user.TeacherId;
 
-    const { className, description, date, time, duration, maxCapacity } =
+    const { className, description, date, time, duration, maxCapacity, venue } =
       req.body;
 
     const teacher = await Teacher.findById(teacherId);
@@ -39,6 +39,7 @@ router.post("/create-class", authenticateToken, async (req, res) => {
       time,
       duration,
       maxCapacity,
+      venue,
       teacher: teacherId,
     });
 
@@ -160,7 +161,7 @@ router.get("/get-classes", async (req, res) => {
 router.put("/update-class/:classId", authenticateToken, async (req, res) => {
   try {
     const { classId } = req.params;
-    const { className, description, date, time, duration, maxCapacity } =
+    const { className, description, date, time, duration, maxCapacity, venue } =
       req.body;
 
     const updatedClass = await Class.findByIdAndUpdate(
@@ -172,6 +173,7 @@ router.put("/update-class/:classId", authenticateToken, async (req, res) => {
         time,
         duration,
         maxCapacity,
+        venue
       },
       { new: true }
     );
@@ -219,7 +221,7 @@ router.get("/teacher-classes", authenticateToken, async (req, res) => {
 router.get("/student-classes", authenticateToken, async (req, res) => {
   try {
     const userId = req.user.StudentId;
-    const classes = await Class.find({ 'students.studentId' : userId });
+    const classes = await Class.find({ 'students.studentId': userId }).populate('teacher students.studentId', 'name email');
     res.status(200).json({ classes });
   } catch (error) {
     res.status(400).json({ error: error.message });

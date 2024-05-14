@@ -17,6 +17,7 @@ import Header from './Components/Dashboard/Header/Header.jsx';
 import ViewAsanasinTeacher from './Components/Dashboard/ViewAsanasinTeacher/ViewAsanasinteacher.jsx';
 import Forms from './Components/Studnet-Dashboard/Forms/Forms.jsx';
 import AdminDashboard from './Components/Admin/AdminDashboard.jsx';
+import StudentSequence from './Components/Studnet-Dashboard/StudentClassesJoined/SrudentForms.jsx';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
 <Route path='/createClssSession' element={<CreateClassSession id="create-session" />
 }></Route>
 <Route path='/AdminDashboard' element={<AdminDashboard></AdminDashboard>}></Route>
+<Route path='/sugesstion' element={<StudentSequence></StudentSequence>}></Route>
                   </Routes>
     </Router>
     </div>  
