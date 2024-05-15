@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Ensure Bootstrap JS is imported
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Forms from '../Forms/Forms';
 
 const StudentHeader = () => {
@@ -9,7 +10,8 @@ const StudentHeader = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  const [showFormsModal, setShowFormsModal] = useState(false); 
+  const [showFormsModal, setShowFormsModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = sessionStorage.getItem('user');
@@ -39,13 +41,19 @@ const StudentHeader = () => {
       const response = await axios.get(
         `http://localhost:3001/api/asana/view-asanas?search=${searchTerm}`
       );
-      setSearchResults(response.data); 
+      setSearchResults(response.data);
     } catch (error) {
       console.error('Error fetching search results:', error);
     }
   };
 
-  // Function to toggle Forms modal visibility
+  const logout = () => {
+    // Remove JWT token from session storage
+    sessionStorage.removeItem('token');
+    // Navigate to login page
+    navigate('/');
+  };
+
   const toggleFormsModal = () => {
     setShowFormsModal(!showFormsModal);
   };
@@ -53,7 +61,7 @@ const StudentHeader = () => {
   return (
     <div className="student-header">
       <nav className="navbar navbar-expand-md navbar-light bg-light">
-        <a className="navbar-brand" href="#" style={{color:"black"}}>
+        <a className="navbar-brand" href="#" style={{ color: 'black' }}>
           Yoga Planner
         </a>
         <button
@@ -76,9 +84,14 @@ const StudentHeader = () => {
           id="navbarSupportedContent"
         >
           <ul className="navbar-nav ml-auto py-4 py-md-0">
-  
             <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-              <a className="nav-link" href="#" onClick={toggleFormsModal} data-toggle="modal" data-target="#formsModal">
+              <a
+                className="nav-link"
+                href="#"
+                onClick={toggleFormsModal}
+                data-toggle="modal"
+                data-target="#formsModal"
+              >
                 Forms
               </a>
             </li>
@@ -107,21 +120,22 @@ const StudentHeader = () => {
                     dropdownOpen ? 'show' : ''
                   }`}
                 >
-                  <a href="#" className="col-5">
+                  <a href="/student-settings" className="col-5">
                     Settings
                   </a>
+                  <button className="col-5" onClick={logout}>Logout</button> {/* Logout button */}
                 </div>
               </div>
             </li>
           </ul>
         </div>
       </nav>
-    
+
       <div className="search-results">
         <ul>
           {searchResults.map((result) => (
             <li key={result.id}>
-              {result.name} 
+              {result.name}
             </li>
           ))}
         </ul>

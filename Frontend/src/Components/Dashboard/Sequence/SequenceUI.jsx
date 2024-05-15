@@ -62,8 +62,11 @@ const SequenceUI = ({ studentId }) => { // Accept studentId prop
   };
 
   const handleSend = async () => {
+    console.log("hi")
     try {
       const token = sessionStorage.getItem('token');
+      console.log(sequenceIdsToSend)
+      console.log(lastSequenceId)
       await axios.post(`http://localhost:3001/api/form/suggest-sequence/${studentId}`, { // Use studentId here
         sequenceIds: [...sequenceIdsToSend, lastSequenceId] 
       }, {
@@ -112,7 +115,7 @@ const SequenceUI = ({ studentId }) => { // Accept studentId prop
         <Button variant="primary" onClick={toggleSequenceModal}>Add Sequence</Button>
         <br />
         <button type="submit">Save</button>
-        <button onClick={handleSend} disabled={!lastSequenceId}>Send</button>
+        <button onClick={handleSend}>Send</button>
       </form>
 
       <Modal show={showSequenceModal} onHide={toggleSequenceModal}>

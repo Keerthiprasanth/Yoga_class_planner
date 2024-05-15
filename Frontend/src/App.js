@@ -13,11 +13,11 @@ import TeacherSettings from './Components/Dashboard/TeacherSetting/Teacher-setti
 import AsanasAddedByUser from './Components/Dashboard/AsasnsAddedByUser/AsanasAddedByUser.jsx';
 import ViewAsanas from './Components/Dashboard/View-Asanas/ViewAsanas.jsx';
 import CreateClassSession from './Components/Dashboard/Create-session/Create-session.jsx';
-import Header from './Components/Dashboard/Header/Header.jsx';
 import ViewAsanasinTeacher from './Components/Dashboard/ViewAsanasinTeacher/ViewAsanasinteacher.jsx';
 import Forms from './Components/Studnet-Dashboard/Forms/Forms.jsx';
 import AdminDashboard from './Components/Admin/AdminDashboard.jsx';
 import StudentSequence from './Components/Studnet-Dashboard/StudentClassesJoined/SrudentForms.jsx';
+import StudentSettings from './Components/Studnet-Dashboard/Header/StudentSettings.jsx';
 
 function App() {
   return (
@@ -39,9 +39,12 @@ function App() {
 <Route path='/forms' element={<Forms></Forms>}></Route>
 <Route path='/createClssSession' element={<CreateClassSession id="create-session" />
 }></Route>
+<Route path='/student-settings' element={<StudentSettings></StudentSettings>}></Route>
 <Route path='/AdminDashboard' element={<AdminDashboard></AdminDashboard>}></Route>
 <Route path='/sugesstion' element={<StudentSequence></StudentSequence>}></Route>
+
                   </Routes>
+
     </Router>
     </div>  
   );

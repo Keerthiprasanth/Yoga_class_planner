@@ -106,6 +106,38 @@ router.get("/student-forms", authenticateToken, async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+router.get("/student-forms/:studentId", async (req, res) => {
+  try {
+    const { studentId } = req.params;
+    const forms = await FormData.find({ submittedBy: studentId })
+      .populate({
+        path: "submittedBy",
+        select: "name email",
+      })
+      .populate({
+        path: "suggestedSequences",
+        populate: [
+          {
+            path: "sequenceId",
+            select: "name description benefits addedByName addedById",
+            populate: {
+              path: "asanas",
+              select: "name description benefits image addedByName addedById",
+            },
+          },
+          {
+            path: "suggestedBy",
+            select: "name email",
+          },
+        ],
+      });
+
+    res.status(200).json({ forms });
+  } catch (error) {
+    console.error("Error fetching student forms:", error.message);
+    res.status(400).json({ error: error.message });
+  }
+});
 router.post("/suggest-sequence/:submittedBy", authenticateToken, async (req, res) => {
   try {
     const { submittedBy } = req.params;
