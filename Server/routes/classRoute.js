@@ -74,7 +74,7 @@ router.post("/join-class/:classId", authenticateToken, async (req, res) => {
       return res.status(400).json({ message: "Class is already full" });
     }
 
-    if (classToJoin.students.includes(studentId)) {
+    if (classToJoin.students.some(student => student.studentId.toString() === studentId)) {
       return res
         .status(400)
         .json({ message: "Student is already enrolled in the class" });
@@ -148,8 +148,7 @@ router.delete("/withdraw-class/:classId", authenticateToken, async (req, res) =>
 router.get("/get-classes", async (req, res) => {
   try {
     const sessions = await Class.find()
-      .populate("teacher")
-      .populate("students")
+      .populate('teacher students.studentId', 'name email')
       .sort({ date: 1, time: 1 });
     res.status(200).json(sessions);
   } catch (error) {

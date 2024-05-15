@@ -89,6 +89,7 @@ const StudentHome = () => {
      
     } catch (error) {
       setSuccessMessage(''); 
+      // Fetch the error message and display that 
       setErrorMessage('Error booking class. Please try again.');
       console.error('Error:', error); 
     }

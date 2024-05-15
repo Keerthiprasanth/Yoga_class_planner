@@ -114,9 +114,9 @@ const SessionCreatedByUser = () => {
             <ul>
               {classItem.students.map((student) => (
                 <li key={student.bookingId}>
-                  {student.studentId.name} 
-                  <button onClick={() => handleFormsClick(student.studentId._id)}>Forms</button>
-                  <button onClick={() => handleOpenSequenceModal(student.studentId._id)}>Suggest Sequence</button> {/* Pass student ID here */}
+                {student.studentId && student.studentId.name} 
+                <button onClick={() => handleFormsClick(student.studentId._id)}>Forms</button>
+                <button onClick={() => handleOpenSequenceModal(student.studentId._id)}>Suggest Sequence</button>
                 </li>
               ))}
             </ul>
