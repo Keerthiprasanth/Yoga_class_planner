@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button, Modal } from 'react-bootstrap';
-import Sequence from '../../Sequence/Sequence'; // Import the Sequence component
 import SequenceUI from '../../Sequence/SequenceUI';
 
 const SessionCreatedByUser = () => {
