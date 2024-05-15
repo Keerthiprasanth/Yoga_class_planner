@@ -48,12 +48,12 @@ const Home = () => {
     const asanaBenefits = benefits.filter(benefit => benefit.trim() !== ''); // Filter out empty benefits
     const asanaImage = document.getElementById('asanaImage').files[0]; // Get the first selected file
 
-    // Set up FormData to include text data and the image
+
     const formData = new FormData();
     formData.append('name', asanaName);
     formData.append('description', asanaDescription);
-    formData.append('benefits', JSON.stringify(asanaBenefits)); // Convert benefits array to JSON string
-    formData.append('image', asanaImage);
+    formData.append('benefits', JSON.stringify(asanaBenefits)); 
+    formData.append('image', asanaImage); 
 
     const headers = {
       'Authorization': `Bearer ${token}`,
@@ -70,7 +70,6 @@ const Home = () => {
     })
     .catch(error => {
       console.error('API Error:', error);
-      // Handle error (if needed)
     });
   };
 

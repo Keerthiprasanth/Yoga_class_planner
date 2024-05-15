@@ -47,8 +47,8 @@ router.post("/add-sequence", authenticateToken, async (req, res) => {
 
 router.get("/view-sequences", async (req, res) => {
   try {
-    const sequences = await Sequence.find().populate('asanas');
-
+    // const sequences = await Sequence.find().populate('asanas');
+    const sequences = await Sequence.find()
     res.status(200).json({ sequences });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -62,17 +62,14 @@ router.post(
       const { submittedBy } = req.params;
       const { sequenceIds } = req.body;
       const teacherId = req.user.TeacherId;
-
       const formData = await FormData.findOne({ submittedBy });
       if (!formData) {
         return res.status(404).json({ message: "Form not found" });
       }
-
       const teacher = await Teacher.findById(teacherId);
       if (!teacher) {
         return res.status(404).json({ message: "Teacher not found" });
       }
-
       const sequences = await Sequence.find({ _id: { $in: sequenceIds } });
       if (sequences.length !== sequenceIds.length) {
         return res

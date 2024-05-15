@@ -61,7 +61,6 @@ const StudentClasses = () => {
       console.error('Error withdrawing class:', error);
     }
   };
-
   return (
     <div className='mt-3 col-12'>
       <h1>My Classes</h1>

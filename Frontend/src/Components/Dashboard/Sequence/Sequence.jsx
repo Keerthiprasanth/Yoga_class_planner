@@ -83,6 +83,7 @@ const Sequence = ({ handleAddToBox }) => { // Receive handleAddToBox function as
             <button className="btn btn-info col-12" onClick={handleSave}>Save</button>
           )}
         </div>
+       
       </div>
     </div>
   );

@@ -53,8 +53,7 @@ const Forms = () => {
 
   const handleCancel = () => {
     setFormData(initialFormData);
-  };
-
+  };  
   return (
     <div className="form-container">
       <form>
@@ -110,7 +109,7 @@ const Forms = () => {
 
         <div className='col-12  row'>
           <div className="save">
-            <button type="button" className="col-5 mr-3" onClick={handleSave}>Save</button>
+            <button type="button" className="mr-3" onClick={handleSave}>Save</button>
           </div>
           <div className="cancel">
             <button type="button" onClick={handleCancel}>Cancel</button>

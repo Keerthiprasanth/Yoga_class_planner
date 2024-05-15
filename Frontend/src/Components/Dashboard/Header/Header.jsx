@@ -92,7 +92,7 @@ const Header = () => {
             </li>
   
             <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-              <a className="nav-link" href="/createClssSession">Notification</a>
+              <a className="nav-link" href="/createClssSession">Sessions</a>
             </li>
             
 

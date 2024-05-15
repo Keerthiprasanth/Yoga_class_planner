@@ -17,7 +17,7 @@ const ViewAsanas = () => {
         console.error('Error fetching data:', error);
       });
   }, []);
-
+  
   const loadMore = () => {
     setVisibleAsanas(prev => prev + 3);
   }
@@ -30,7 +30,7 @@ const ViewAsanas = () => {
 
     <div className="asanas-container col-12">
   
-      <h3>Asasnas</h3>
+      <h3>Asanas</h3>
       <input
         type="text"
         placeholder="Search asanas..."

@@ -73,9 +73,9 @@ router.get('/class-forms/:classId', async (req, res) => {
 });
 
 //student end
-router.get("/student-forms/:studentId", async (req, res) => {
+router.get("/student-forms", authenticateToken, async (req, res) => {
   try {
-    const { studentId } = req.params;
+    const studentId = req.user.StudentId;
     console.log(studentId);
     const forms = await FormData.find({ submittedBy: studentId })
       .populate({

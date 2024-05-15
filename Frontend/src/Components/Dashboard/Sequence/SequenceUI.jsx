@@ -1,18 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
 import Sequence from './Sequence';
 
-const SequenceUI = () => {
+const SequenceUI = ({ studentId }) => { // Accept studentId prop
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     benefits: [],
     asanaIds: [],
-    addedByName: '', // Adding user name to form data
-    addedById: '',   // Adding user id to form data
   });
   const [showSequenceModal, setShowSequenceModal] = useState(false);
+  const [lastSequenceId, setLastSequenceId] = useState(null); // State to store the ID of the last added sequence
+  const [sequenceIdsToSend, setSequenceIdsToSend] = useState([]); // State to store sequence IDs to send
+
+  useEffect(() => {
+    fetchLastSequenceId();
+  }, []);
+
+  const fetchLastSequenceId = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/api/sequence/view-sequences');
+      const sequences = response.data.sequences;
+      if (sequences.length > 0) {
+        const lastSequence = sequences[sequences.length - 1];
+        setLastSequenceId(lastSequence._id);
+      }
+    } catch (error) {
+      console.error('Error fetching sequences:', error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,23 +43,38 @@ const SequenceUI = () => {
     e.preventDefault();
     try {
       const token = sessionStorage.getItem('token');
-      await axios.post('http://localhost:3001/api/sequence/add-sequence', formData, {
+      const response = await axios.post('http://localhost:3001/api/sequence/add-sequence', formData, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         }
       });
-      console.log('Sequence added:', formData);
       setFormData({
         name: '',
         description: '',
         benefits: [],
-        addedByName: '', // Resetting user name
-        addedById: '',   // Resetting user id
       });
       setShowSequenceModal(false);
+      setLastSequenceId(response.data._id); // Update lastSequenceId with the ID of the last added sequence
     } catch (error) {
       console.error('Error adding sequence:', error);
+    }
+  };
+
+  const handleSend = async () => {
+    try {
+      const token = sessionStorage.getItem('token');
+      await axios.post(`http://localhost:3001/api/form/suggest-sequence/${studentId}`, { // Use studentId here
+        sequenceIds: [...sequenceIdsToSend, lastSequenceId] 
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      setSequenceIdsToSend([]); 
+    } catch (error) {
+      console.error('Error sending sequence to student:', error);
     }
   };
 
@@ -51,14 +83,9 @@ const SequenceUI = () => {
   };
 
   const handleAddToBox = (selectedAsanas) => {
-    // Assuming user name and user id are available in sessionStorage
-    const userName = sessionStorage.getItem('userName');
-    const userId = sessionStorage.getItem('userId');
     setFormData(prevData => ({
       ...prevData,
       asanaIds: selectedAsanas,
-      addedByName: userName,
-      addedById: userId,
     }));
     setShowSequenceModal(false);
   };
@@ -85,6 +112,7 @@ const SequenceUI = () => {
         <Button variant="primary" onClick={toggleSequenceModal}>Add Sequence</Button>
         <br />
         <button type="submit">Save</button>
+        <button onClick={handleSend} disabled={!lastSequenceId}>Send</button>
       </form>
 
       <Modal show={showSequenceModal} onHide={toggleSequenceModal}>

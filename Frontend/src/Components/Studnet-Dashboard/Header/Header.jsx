@@ -83,7 +83,7 @@ const StudentHeader = () => {
               </a>
             </li>
             <li className="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-              <a className="nav-link" href="/sugesstions">
+              <a className="nav-link" href="/sugesstion">
                 Notification
               </a>
             </li>
@@ -126,8 +126,6 @@ const StudentHeader = () => {
           ))}
         </ul>
       </div>
-
-
       <div className={`modal fade ${showFormsModal ? 'show' : ''}`} id="formsModal" tabIndex="-1" role="dialog">
         <div className="modal-dialog" role="document">
           <div className="modal-content">

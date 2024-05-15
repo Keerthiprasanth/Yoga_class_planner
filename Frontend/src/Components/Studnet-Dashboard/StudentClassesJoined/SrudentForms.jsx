@@ -9,14 +9,12 @@ const StudentSequence = () => {
   useEffect(() => {
     const fetchForms = async () => {
       try {
-        // Retrieve token from session storage
         const token = sessionStorage.getItem('token');
-        // Decode token to access user information
-        const decodedToken = JSON.parse(atob(token.split('.')[1]));
-        // Extract student ID from decoded token
-        const studentId = decodedToken.id;
-
-        const response = await axios.get(`http://localhost:3001/api/student-forms/${studentId}`);
+        const response = await axios.get('http://localhost:3001/api/form/student-forms', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
         setForms(response.data.forms);
         setLoading(false);
       } catch (error) {
@@ -44,13 +42,15 @@ const StudentSequence = () => {
         <div key={form._id}>
           <h2>{form.name}</h2>
           <p>Description: {form.description}</p>
-          {/* Display suggested sequences */}
+       
           <h3>Suggested Sequences</h3>
           {form.suggestedSequences.map(sequence => (
             <div key={sequence._id}>
               <h4>Sequence Name: {sequence.sequenceId.name}</h4>
               <p>Description: {sequence.sequenceId.description}</p>
-              {/* Render images and benefits if asanas length is greater than 1 */}
+             
+              <p>Sent by: {sequence.suggestedBy.name}</p>
+          
               {sequence.sequenceId.asanas.length > 1 && (
                 <div>
                   <h5>Images and Benefits:</h5>

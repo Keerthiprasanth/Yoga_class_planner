@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button, Modal } from 'react-bootstrap';
 import Sequence from '../../Sequence/Sequence'; // Import the Sequence component
@@ -19,6 +19,8 @@ const SessionCreatedByUser = () => {
     addedById: ''
   });
   const [sequences, setSequences] = useState([]);
+  const [selectedStudentId, setSelectedStudentId] = useState(null); // State to hold selected student ID
+
   useEffect(() => {
     const fetchClasses = async () => {
       try {
@@ -72,7 +74,8 @@ const SessionCreatedByUser = () => {
     }
   };
 
-  const handleOpenSequenceModal = () => {
+  const handleOpenSequenceModal = (studentId) => { // Pass student ID to this function
+    setSelectedStudentId(studentId); // Set selected student ID
     setShowSequenceModal(true);
   };
 
@@ -106,6 +109,7 @@ const SessionCreatedByUser = () => {
             <p>Time: {classItem.time}</p>
             <p>Duration: {classItem.duration} minutes</p>
             <p>Max Capacity: {classItem.maxCapacity}</p>
+            <p>Venue: {classItem.venue}</p>
             <Button variant="danger" onClick={() => handleDeleteClick(classItem._id)}>Delete</Button>
             <h3>Students:</h3>
             <ul>
@@ -113,7 +117,7 @@ const SessionCreatedByUser = () => {
                 <li key={student.bookingId}>
                   {student.studentId.name} 
                   <button onClick={() => handleFormsClick(student.studentId._id)}>Forms</button>
-                  <button onClick={handleOpenSequenceModal}>Suggest Sequence</button>
+                  <button onClick={() => handleOpenSequenceModal(student.studentId._id)}>Suggest Sequence</button> {/* Pass student ID here */}
                 </li>
               ))}
             </ul>
@@ -166,12 +170,12 @@ const SessionCreatedByUser = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      <Modal show={showSequenceModal} onHide={handleCloseSequenceModal}> {/* Sequence Modal */}
+      <Modal show={showSequenceModal} onHide={handleCloseSequenceModal}>
         <Modal.Header closeButton>
           <Modal.Title>Sequence Modal</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <SequenceUI /> {/* Render the Sequence component here */}
+          <SequenceUI studentId={selectedStudentId} /> {/* Pass student ID to SequenceUI component */}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseSequenceModal}>Close</Button>

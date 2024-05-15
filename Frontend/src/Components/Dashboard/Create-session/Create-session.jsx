@@ -11,14 +11,15 @@ const CreateClassSession = () => {
     date: '',
     time: '',
     duration: '',
-    maxCapacity: ''
+    maxCapacity: '',
+    venue:''
   });
   const [message, setMessage] = useState(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -35,7 +36,7 @@ const CreateClassSession = () => {
     }
 
     try {
-  
+
       const response = await axios.post('http://localhost:3001/api/class/create-class', formData, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -48,7 +49,8 @@ const CreateClassSession = () => {
         date: '',
         time: '',
         duration: '',
-        maxCapacity: ''
+        maxCapacity: '',
+        venue:''
       });
     } catch (error) {
       console.error('Error creating class session:', error);
@@ -118,6 +120,15 @@ const CreateClassSession = () => {
             id="maxCapacity"
             name="maxCapacity"
             value={formData.maxCapacity}
+            onChange={handleChange}
+            required
+          />
+            <label htmlFor="venue">Venue:</label>
+          <input
+            type="text"
+            id="venue"
+            name="venue"
+            value={formData.venue}
             onChange={handleChange}
             required
           />
