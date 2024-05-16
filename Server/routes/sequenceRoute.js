@@ -39,7 +39,7 @@ router.post("/add-sequence", authenticateToken, async (req, res) => {
 
     await newSequence.save();
 
-    res.status(200).json({ message: "Sequence created successfully" , sequence: newSequence});
+    res.status(200).json({ message: "Sequence created successfully" , sequenceId: newSequence._id, sequence: newSequence});
     
   } catch (error) {
     res.status(400).json({ error: error.message });
