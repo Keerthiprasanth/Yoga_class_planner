@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal, Form } from 'react-bootstrap';
 import SequenceUI from '../../Sequence/SequenceUI';
 
 const SessionCreatedByUser = () => {
@@ -18,7 +18,9 @@ const SessionCreatedByUser = () => {
     addedById: ''
   });
   const [sequences, setSequences] = useState([]);
-  const [selectedStudentId, setSelectedStudentId] = useState(null); // State to hold selected student ID
+  const [selectedStudentId, setSelectedStudentId] = useState(null); 
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [classToEdit, setClassToEdit] = useState(null);
 
   useEffect(() => {
     const fetchClasses = async () => {
@@ -34,7 +36,6 @@ const SessionCreatedByUser = () => {
         console.error('Error fetching classes:', error);
       }
     };
-
     fetchClasses();
   }, []);
 
@@ -42,7 +43,6 @@ const SessionCreatedByUser = () => {
     setClassToDelete(classId);
     setShowDeleteModal(true);
   };
-
   const handleDeleteConfirm = async () => {
     try {
       const token = sessionStorage.getItem('token');
@@ -55,6 +55,33 @@ const SessionCreatedByUser = () => {
       setShowDeleteModal(false);
     } catch (error) {
       console.error('Error deleting class:', error);
+    }
+  };
+  
+  const handleEditClick = (classItem) => {
+    setClassToEdit(classItem);
+    setShowEditModal(true);
+  };
+
+  const handleEditConfirm = async () => {
+    try {
+      const token = sessionStorage.getItem('token');
+      await axios.put(`http://localhost:3001/api/class/update-class/${classToEdit._id}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      // Update class in state
+      const updatedClasses = classes.map(classItem => {
+        if (classItem._id === classToEdit._id) {
+          return { ...classItem, ...formData };
+        }
+        return classItem;
+      });
+      setClasses(updatedClasses);
+      setShowEditModal(false);
+    } catch (error) {
+      console.error('Error updating class:', error);
     }
   };
 
@@ -73,8 +100,8 @@ const SessionCreatedByUser = () => {
     }
   };
 
-  const handleOpenSequenceModal = (studentId) => { // Pass student ID to this function
-    setSelectedStudentId(studentId); // Set selected student ID
+  const handleOpenSequenceModal = (studentId) => { 
+    setSelectedStudentId(studentId); 
     setShowSequenceModal(true);
   };
 
@@ -84,16 +111,11 @@ const SessionCreatedByUser = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Handle form submission
   };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
-  };
-
-  const handleDelete = (sequenceId) => {
-    // Handle sequence deletion
   };
 
   return (
@@ -110,13 +132,14 @@ const SessionCreatedByUser = () => {
             <p>Max Capacity: {classItem.maxCapacity}</p>
             <p>Venue: {classItem.venue}</p>
             <Button variant="danger" onClick={() => handleDeleteClick(classItem._id)}>Delete</Button>
+            <Button variant="primary" onClick={() => handleEditClick(classItem)}>Edit</Button>
             <h3>Students:</h3>
             <ul>
               {classItem.students.map((student) => (
                 <li key={student.bookingId}>
-                {student.studentId && student.studentId.name} 
-                <button onClick={() => handleFormsClick(student.studentId._id)}>Forms</button>
-                <button onClick={() => handleOpenSequenceModal(student.studentId._id)}>Suggest Sequence</button>
+                  {student.studentId && student.studentId.name} 
+                  <button onClick={() => handleFormsClick(student.studentId._id)}>Forms</button>
+                  <button onClick={() => handleOpenSequenceModal(student.studentId._id)}>Suggest Sequence</button>
                 </li>
               ))}
             </ul>
@@ -134,6 +157,28 @@ const SessionCreatedByUser = () => {
           </Button>
           <Button variant="danger" onClick={handleDeleteConfirm}>
             Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Class</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="className">
+              <Form.Label>Class Name</Form.Label>
+              <Form.Control type="text" name="className" value={formData.className} onChange={handleChange} />
+            </Form.Group>
+            {/* Add other form fields for editing */}
+            <Button variant="primary" type="submit" onClick={handleEditConfirm}>
+              Save Changes
+            </Button>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+            Close
           </Button>
         </Modal.Footer>
       </Modal>
@@ -174,7 +219,7 @@ const SessionCreatedByUser = () => {
           <Modal.Title>Sequence Modal</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <SequenceUI studentId={selectedStudentId} /> {/* Pass student ID to SequenceUI component */}
+          <SequenceUI studentId={selectedStudentId} /> 
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseSequenceModal}>Close</Button>

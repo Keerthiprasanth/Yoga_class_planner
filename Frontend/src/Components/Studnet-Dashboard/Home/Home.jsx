@@ -113,6 +113,7 @@ const StudentHome = () => {
               <p>Time: {classItem.time}</p>
               <p>Teacher: {classItem.teacher.name}</p> 
               <p>Available Capacity: {classItem.maxCapacity - (classItem.students ? classItem.students.length : 0)}</p>
+              <p>Venue:{classItem.venue}</p>
       
               <br></br>
               <button className="button" onClick={() => bookSession(classItem._id)}>Book session</button>

@@ -73,6 +73,7 @@ const StudentClasses = () => {
             <p>Time: {classItem.time}</p>
             <p>Duration: {classItem.duration} minutes</p>
             <p>Max Capacity: {classItem.maxCapacity}</p>
+            <p>Venue: {classItem.venue}</p>
             <Button variant="danger" onClick={() => handleWithdrawClick(classItem._id)}>Withdraw</Button>
           </div>
         ))}

@@ -123,11 +123,14 @@ const AsanasAddedByUser = () => {
                 <p className="card-description">Description: {asana.description}</p>
                 <p className="card-added-by">Added By: {asana.addedByName}</p>
                 <ul className="card-benefits">
-                  <li>Benefits:</li>
-                  {asana.benefits.map((benefit, index) => (
-                    <li key={index}>{benefit}</li>
-                  ))}
-                </ul>
+  <li>Benefits:</li>
+  {asana.benefits.map((benefit, index) => (
+    <li key={index}>
+     {benefit}
+    </li>
+  ))}
+</ul>
+
                 <div className="card-buttons">
                   <button className="update-button" onClick={() => handleUpdateModal(asana)}>Update</button>
                   <button className="delete-button" onClick={() => handleDeleteModal(asana._id)}>Delete</button>

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
 import Sequence from './Sequence';
 
-const SequenceUI = ({ studentId }) => { // Accept studentId prop
+const SequenceUI = ({ studentId }) => {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -11,12 +11,7 @@ const SequenceUI = ({ studentId }) => { // Accept studentId prop
     asanaIds: [],
   });
   const [showSequenceModal, setShowSequenceModal] = useState(false);
-  const [lastSequenceId, setLastSequenceId] = useState(null); // State to store the ID of the last added sequence
-  const [sequenceIdsToSend, setSequenceIdsToSend] = useState([]); // State to store sequence IDs to send
-
-  useEffect(() => {
-    fetchLastSequenceId();
-  }, []);
+  const [sequenceIdsToSend, setSequenceIdsToSend] = useState([]);
 
   const fetchLastSequenceId = async () => {
     try {
@@ -24,7 +19,7 @@ const SequenceUI = ({ studentId }) => { // Accept studentId prop
       const sequences = response.data.sequences;
       if (sequences.length > 0) {
         const lastSequence = sequences[sequences.length - 1];
-        setLastSequenceId(lastSequence._id);
+        return lastSequence._id;
       }
     } catch (error) {
       console.error('Error fetching sequences:', error);
@@ -55,20 +50,20 @@ const SequenceUI = ({ studentId }) => { // Accept studentId prop
         benefits: [],
       });
       setShowSequenceModal(false);
-      setLastSequenceId(response.data._id); // Update lastSequenceId with the ID of the last added sequence
+      const lastSequenceId = await fetchLastSequenceId(); // Fetch the last sequence ID
+      if (lastSequenceId) {
+        handleSend(lastSequenceId); // Pass the last sequence ID to handleSend
+      }
     } catch (error) {
       console.error('Error adding sequence:', error);
     }
   };
 
-  const handleSend = async () => {
-    console.log("hi")
+  const handleSend = async (sequenceId) => {
     try {
       const token = sessionStorage.getItem('token');
-      console.log(sequenceIdsToSend)
-      console.log(lastSequenceId)
-      await axios.post(`http://localhost:3001/api/form/suggest-sequence/${studentId}`, { // Use studentId here
-        sequenceIds: [...sequenceIdsToSend, lastSequenceId] 
+      await axios.post(`http://localhost:3001/api/form/suggest-sequence/${studentId}`, { 
+        sequenceIds: [...sequenceIdsToSend, sequenceId] 
       }, {
         headers: {
           'Content-Type': 'application/json',
@@ -114,8 +109,7 @@ const SequenceUI = ({ studentId }) => { // Accept studentId prop
         <br />
         <Button variant="primary" onClick={toggleSequenceModal}>Add Sequence</Button>
         <br />
-        <button type="submit">Save</button>
-        <button onClick={handleSend}>Send</button>
+        <button type="submit">Send</button>
       </form>
 
       <Modal show={showSequenceModal} onHide={toggleSequenceModal}>
