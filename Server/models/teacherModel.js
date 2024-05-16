@@ -22,6 +22,12 @@ const teacherSchema = new mongoose.Schema({
     type: String,
     enum: ["beginner", "intermediate", "advanced", "expert"],
   },
+  passwordResetToken: {
+    type: String
+  },
+  passwordResetTokenExpiry: {
+    type: String
+  }
 });
 
 const Teacher = mongoose.model("Teacher", teacherSchema);

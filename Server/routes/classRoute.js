@@ -91,7 +91,7 @@ router.post("/join-class/:classId", authenticateToken, async (req, res) => {
       port: 465,
       secure: true,
       auth: {
-        user: "shyamgjk43@gmail.com",
+        user: "zenflowyogamedia@gmail.com",
         pass: process.env.GMAIL_PASS,
       },
     });
@@ -99,7 +99,7 @@ router.post("/join-class/:classId", authenticateToken, async (req, res) => {
     console.log(student.email);
     
     const mailOptions = {
-      from: "shyamgjk43@gmail.com",
+      from: "zenflowyogamedia@gmail.com",
       to: student.email,
       subject: `Class booking confirmation ID - ${student.bookingId}`,
       text:

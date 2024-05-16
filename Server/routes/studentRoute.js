@@ -2,9 +2,16 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 
 const Student = require("../models/studentModel");
 const authenticateToken = require("../Middleware/authRequest");
+
+const crypto = require("crypto");
+
+function generateResetToken() {
+  return crypto.randomBytes(20).toString("hex");
+}
 
 router.post("/register", async (req, res) => {
   console.log("Request Body:", req.body);
@@ -142,6 +149,73 @@ router.delete("/delete-profile", authenticateToken, async (req, res) => {
     res.status(200).json({ message: "User profile deleted successfully" });
   } catch (error) {
     res.status(400).json({ error: error.message });
+  }
+});
+
+router.post("/request-password-reset", async (req, res) => {
+  try {
+    const { email } = req.body;
+    const student = await Student.findOne({ email });
+
+    if (!student) {
+      return res.status(404).json({ message: "Email not registered" });
+    }
+
+    const token = generateResetToken();
+    const expiry = Date.now() + 3600000;
+
+    student.passwordResetToken = token;
+    student.passwordResetTokenExpiry = expiry;
+    await student.save();
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      host: "smtp@gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: "zenflowyogamedia@gmail.com",
+        pass: process.env.GMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: "zenflowyogamedia@gmail.com",
+      to: student.email,
+      subject: "Password Reset Request",
+      text: `You requested a password reset. Click the link to reset your password: http://your-app-url/reset-password/${token}`
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ message: "Password reset email sent" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.post("/reset-password", async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+
+    const student = await Student.findOne({
+      passwordResetToken: token,
+      passwordResetTokenExpiry: { $gt: Date.now() }
+    });
+
+    if (!student) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    student.password = hashedPassword;
+    student.passwordResetToken = undefined;
+    student.passwordResetTokenExpiry = undefined;
+    await student.save();
+
+    res.status(200).json({ message: "Password reset successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 

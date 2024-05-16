@@ -17,6 +17,12 @@ const studentSchema = new mongoose.Schema({
   birthDate: {
     type: Date,
     required: true,
+  },
+  passwordResetToken: {
+    type: String
+  },
+  passwordResetTokenExpiry: {
+    type: String
   }
 });
 

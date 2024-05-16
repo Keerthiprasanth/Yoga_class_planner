@@ -2,9 +2,16 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 
 const Teacher = require("../models/teacherModel");
 const authenticateToken = require("../Middleware/authRequest");
+
+const crypto = require("crypto");
+
+function generateResetToken() {
+  return crypto.randomBytes(20).toString("hex");
+}
 
 router.post("/register", async (req, res) => {
   console.log("Request Body:", req.body);
@@ -141,6 +148,73 @@ router.get("/teacher-list", async (req, res) => {
     res.json(teacherDetails);
   } catch (error) {
     res.status(400).json({ error: error.message });
+  }
+});
+
+router.post("/request-password-reset", async (req, res) => {
+  try {
+    const { email } = req.body;
+    const teacher = await Teacher.findOne({ email });
+
+    if (!teacher) {
+      return res.status(404).json({ message: "Email not registered" });
+    }
+
+    const token = generateResetToken();
+    const expiry = Date.now() + 3600000;
+
+    teacher.passwordResetToken = token;
+    teacher.passwordResetTokenExpiry = expiry;
+    await teacher.save();
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      host: "smtp@gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: "zenflowyogamedia@gmail.com",
+        pass: process.env.GMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: "zenflowyogamedia@gmail.com",
+      to: teacher.email,
+      subject: "Password Reset Request",
+      text: `You requested a password reset. Click the link to reset your password: http://your-app-url/reset-password/${token}`
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ message: "Password reset email sent" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.post("/reset-password", async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+
+    const teacher = await Student.findOne({
+      passwordResetToken: token,
+      passwordResetTokenExpiry: { $gt: Date.now() }
+    });
+
+    if (!teacher) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    teacher.password = hashedPassword;
+    teacher.passwordResetToken = undefined;
+    teacher.passwordResetTokenExpiry = undefined;
+    await teacher.save();
+
+    res.status(200).json({ message: "Password reset successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 

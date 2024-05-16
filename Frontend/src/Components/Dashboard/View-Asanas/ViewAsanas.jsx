@@ -47,7 +47,7 @@ const ViewAsanas = () => {
               <h5 className="card-title">asana name : {asana.name}</h5>
               <p className="card-text">asana description : {asana.description}</p>
               <p className="card-added-by">Added By: {asana.addedByName}</p>
-              <p>Benifits</p>
+              <p>Benefits</p>
               {asana.benefits.length > 0 && (
                 <ul>
                   {asana.benefits.map((benefit, index) => (
