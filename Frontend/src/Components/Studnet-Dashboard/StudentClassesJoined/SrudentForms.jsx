@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './StudentSequence.css'; // Import the CSS file for styling
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 const StudentSequence = () => {
   const [forms, setForms] = useState([]);
@@ -36,32 +39,33 @@ const StudentSequence = () => {
   }
 
   return (
-    <div>
+    <div className="student-forms-container"> {/* Apply the CSS class to the container */}
       <h1>Student Forms</h1>
       {forms.map(form => (
-        <div key={form._id}>
+        <div key={form._id} className="form">
           <h2>{form.name}</h2>
-          <p>Description: {form.description}</p>
+        
        
           <h3>Suggested Sequences</h3>
           {form.suggestedSequences.map(sequence => (
-            <div key={sequence._id}>
+            <div key={sequence._id} className="sequence">
               <h4>Sequence Name: {sequence.sequenceId.name}</h4>
               <p>Description: {sequence.sequenceId.description}</p>
              
               <p>Sent by: {sequence.suggestedBy.name}</p>
-          
-              {sequence.sequenceId.asanas.length > 1 && (
-                <div>
-                  <h5>Images and Benefits:</h5>
-                  {sequence.sequenceId.asanas.map(asana => (
-                    <div key={asana._id}>
-                      <img src={asana.image[0]} alt={asana.name} />
-                      <p>{asana.benefits[0]}</p>
+              
+              <div className="sequence-images">
+                {sequence.sequenceId.asanas.map(asana => (
+                  <div key={asana._id} className="asana-info">
+                    <img src={asana.image[0]} alt={asana.name} className="asana-image" />
+                    <div className="asana-details">
+                      <h5>{asana.name}</h5>
+                      <p>Benefits: {asana.benefits[0]}</p>
+                      <p>Description: {asana.description}</p>
                     </div>
-                  ))}
-                </div>
-              )}
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
         </div>

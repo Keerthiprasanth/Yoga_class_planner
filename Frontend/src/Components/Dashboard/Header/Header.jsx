@@ -113,7 +113,7 @@ const Header = () => {
                 <a href='/teacher-settings' className='col-5'>Profile</a>
                 </li>
                 <li>
-                <button onClick={handleLogout} className='col-12' style={{background:"black", color :"white"}}>Logout</button>
+                <button onClick={handleLogout}  style={{background:"black", color :"white"}}>Logout</button>
                 </li>
                 </ul>
               </div>

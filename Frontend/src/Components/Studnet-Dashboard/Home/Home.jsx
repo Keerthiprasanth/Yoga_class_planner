@@ -111,7 +111,7 @@ const StudentHome = () => {
               <p>{classItem.description}</p>
               <p>Date: {new Date(classItem.date).toLocaleDateString()}</p>
               <p>Time: {classItem.time}</p>
-              <p>Teacher: {teacherNames[classItem.teacher]}</p> 
+              <p>Teacher: {classItem.teacher.name}</p> 
               <p>Available Capacity: {classItem.maxCapacity - (classItem.students ? classItem.students.length : 0)}</p>
       
               <br></br>

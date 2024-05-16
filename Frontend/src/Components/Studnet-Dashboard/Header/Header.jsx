@@ -123,7 +123,9 @@ const StudentHeader = () => {
                   <a href="/student-settings" className="col-5">
                     Settings
                   </a>
-                  <button className="col-5" onClick={logout}>Logout</button> {/* Logout button */}
+                  <div className="div col-12">
+                  <button onClick={logout}>Logout</button> {/* Logout button */}
+                  </div>
                 </div>
               </div>
             </li>
