@@ -3,14 +3,13 @@ import axios from 'axios';
 import "./Home.css"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
-import $ from 'jquery'; // Import jQuery for modal handling
+import $ from 'jquery';
 import ViewAsanasComponent from '../View-Asanas/ViewAsanas';
 import Header from '../Header/Header';
 
 const Home = () => {
   const [user, setUser] = useState(null);
-  const [benefits, setBenefits] = useState(['']); // State for benefits input fields
-
+  const [benefits, setBenefits] = useState(['']);
   useEffect(() => {
     const storedUser = sessionStorage.getItem('user');
     console.log('Stored User:', storedUser);
@@ -27,26 +26,22 @@ const Home = () => {
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
-
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i; // Allowed extensions
+    const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
     if (!allowedExtensions.exec(file.name)) {
       alert('Please upload an image file (jpg, jpeg, png, or gif)');
-      event.target.value = ''; // Clear the input field
+      event.target.value = ''; 
       return false;
     }
   };
 
   const saveChanges = () => {
-    // Retrieve the bearer token from session storage
     const token = sessionStorage.getItem('token');
-
-    // Get input values
     const asanaName = document.getElementById('asanaName').value;
     const asanaDescription = document.getElementById('asanaDescription').value;
-    const asanaBenefits = benefits.filter(benefit => benefit.trim() !== ''); // Filter out empty benefits
-    const asanaImage = document.getElementById('asanaImage').files[0]; // Get the first selected file
+    const asanaBenefits = benefits.filter(benefit => benefit.trim() !== ''); 
+    const asanaImage = document.getElementById('asanaImage').files[0]; 
 
 
     const formData = new FormData();

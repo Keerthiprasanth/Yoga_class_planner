@@ -50,9 +50,9 @@ const SequenceUI = ({ studentId }) => {
         benefits: [],
       });
       setShowSequenceModal(false);
-      const lastSequenceId = await fetchLastSequenceId(); // Fetch the last sequence ID
+      const lastSequenceId = await fetchLastSequenceId();
       if (lastSequenceId) {
-        handleSend(lastSequenceId); // Pass the last sequence ID to handleSend
+        handleSend(lastSequenceId); 
       }
     } catch (error) {
       console.error('Error adding sequence:', error);

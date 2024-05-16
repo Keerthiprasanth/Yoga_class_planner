@@ -135,7 +135,6 @@ router.post("/teacher/register", async (req, res) => {
       email: req.body.email,
       password: hashedPassword,
       birthDate: req.body.birthDate,
-      experience: req.body.experience,
     });
 
     await newTeacher.save();

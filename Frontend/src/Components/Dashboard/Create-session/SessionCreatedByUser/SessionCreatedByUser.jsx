@@ -77,7 +77,7 @@ const SessionCreatedByUser = () => {
           return { ...classItem, ...formData };
         }
         return classItem;
-      });
+      });         
       setClasses(updatedClasses);
       setShowEditModal(false);
     } catch (error) {
@@ -131,14 +131,14 @@ const SessionCreatedByUser = () => {
             <p>Duration: {classItem.duration} minutes</p>
             <p>Max Capacity: {classItem.maxCapacity}</p>
             <p>Venue: {classItem.venue}</p>
-            <Button variant="danger" onClick={() => handleDeleteClick(classItem._id)}>Delete</Button>
+            <Button variant="danger" onClick={() => handleDeleteClick(classItem._id)}>Delete</Button>{' '}
             <Button variant="primary" onClick={() => handleEditClick(classItem)}>Edit</Button>
             <h3>Students:</h3>
             <ul>
               {classItem.students.map((student) => (
                 <li key={student.bookingId}>
                   {student.studentId && student.studentId.name} 
-                  <button onClick={() => handleFormsClick(student.studentId._id)}>Forms</button>
+                  <button className='ml-3' onClick={() => handleFormsClick(student.studentId._id)}>Forms</button>{' '}
                   <button onClick={() => handleOpenSequenceModal(student.studentId._id)}>Suggest Sequence</button>
                 </li>
               ))}
@@ -170,7 +170,22 @@ const SessionCreatedByUser = () => {
               <Form.Label>Class Name</Form.Label>
               <Form.Control type="text" name="className" value={formData.className} onChange={handleChange} />
             </Form.Group>
-            {/* Add other form fields for editing */}
+            <Form.Group controlId="description">
+              <Form.Label>Desription</Form.Label>
+              <Form.Control type="text" name="description" value={formData.description} onChange={handleChange} />
+            </Form.Group>
+            <Form.Group controlId="time">
+              <Form.Label>time</Form.Label>
+              <Form.Control type="time" name="time" value={formData.time} onChange={handleChange} />
+            </Form.Group>
+            <Form.Group controlId="date">
+              <Form.Label>Date</Form.Label>
+              <Form.Control type="Date" name="date" value={formData.date} onChange={handleChange} />
+            </Form.Group>
+            <Form.Group controlId="duration">
+              <Form.Label>Date</Form.Label>
+              <Form.Control type="text" name="duration" value={formData.duration} onChange={handleChange} />
+            </Form.Group>
             <Button variant="primary" type="submit" onClick={handleEditConfirm}>
               Save Changes
             </Button>

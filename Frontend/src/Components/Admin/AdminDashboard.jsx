@@ -1,4 +1,5 @@
 import AdminStudent from "./AdminStudent/AdminStudent"
+import AdminTeacher from "./AdminStudent/AdminTeacher"
 
 const AdminDashboard = () =>{
     return(
@@ -6,6 +7,7 @@ const AdminDashboard = () =>{
             <div className="student-register">
             <AdminStudent></AdminStudent>
             </div>
+            <div><AdminTeacher></AdminTeacher></div>
         </div>
     )
 }

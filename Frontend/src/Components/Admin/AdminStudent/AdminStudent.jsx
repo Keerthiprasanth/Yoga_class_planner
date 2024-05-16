@@ -38,11 +38,18 @@ const AdminStudent = () => {
     }
   };
 
-  const handleUpdate = async (studentId, updatedData) => {
+  const handleUpdate = async (studentId) => {
     try {
+      // Extract student ID from the updatedData object
+      const updatedStudent = students.find(student => student._id === studentId);
+      const { name, email, password, birthDate } = updatedStudent;
+      
       const response = await axios.put('http://localhost:3001/api/admin/student/update', {
         studentId,
-        ...updatedData
+        name,
+        email,
+        password,
+        birthDate
       });
       setSuccessMessage(response.data.message);
       setErrorMessage('');
@@ -53,7 +60,7 @@ const AdminStudent = () => {
       setErrorMessage(error.response.data.message);
     }
   };
-
+  
   const handleDelete = async (studentId) => {
     try {
       const response = await axios.delete('http://localhost:3001/api/admin/student/delete-profile', {
