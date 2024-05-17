@@ -71,6 +71,7 @@ const StudentLogin = () => {
             </button>
           </div>
           <span>New user? <a href="/student-signup">Register</a> here</span>
+          <span><a href="/forgot-password">Forgot Password?</a></span>
           <button type="submit" className="login-button">Submit</button>
         </form>
       </div>
