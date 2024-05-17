@@ -90,17 +90,19 @@ const StudentHome = () => {
     } catch (error) {
       setSuccessMessage(''); 
       // Fetch the error message and display that 
-      setErrorMessage('Error booking class. Please try again.');
+      const errorMsg = error.response?.data?.message || 'Error booking class. Please try again.';
+      setErrorMessage(errorMsg);
       console.error('Error:', error); 
     }
   };
+
   return (
-    <div className="student-home">
+    <div className="student-home col-12">
       <div className="view-asanas">
         <ViewAsanas></ViewAsanas>
       </div>
       {successMessage && <div className="success-message">{successMessage}</div>}
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
+      {errorMessage && <div className="error-message" style={{color:"red",fontSize:"20px"}}>{errorMessage}</div>}
       <h1>Classes that are available</h1>
       <div className="class-box-container">
         {displayedClasses.map((classItem) => {
@@ -140,4 +142,5 @@ const StudentHome = () => {
     </div>
   );
 };
+
 export default StudentHome;

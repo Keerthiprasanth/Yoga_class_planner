@@ -38,22 +38,33 @@ const AdminStudent = () => {
     }
   };
 
-  const handleUpdate = async (studentId) => {
+  const handleUpdate = async (studentId, updatedData) => {
     try {
-      // Extract student ID from the updatedData object
-      const updatedStudent = students.find(student => student._id === studentId);
-      const { name, email, password, birthDate } = updatedStudent;
-      
       const response = await axios.put('http://localhost:3001/api/admin/student/update', {
         studentId,
-        name,
-        email,
-        password,
-        birthDate
+        ...updatedData
       });
       setSuccessMessage(response.data.message);
       setErrorMessage('');
       // Fetch updated list of students
+      fetchStudents();
+    } catch (error) {
+      setSuccessMessage('');
+      setErrorMessage(error.response.data.message);
+    }
+  };
+
+  const handleDelete = async (studentId) => {
+    try {
+      const response = await axios.delete('http://localhost:3001/api/admin/student/delete-profile', {
+        data: { StudentId: studentId  }, // Send studentId as data in the request body
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      setSuccessMessage(response.data.message);
+      setErrorMessage('');
+      alert("Student profile deleted")
       fetchStudents();
     } catch (error) {
       setSuccessMessage('');
@@ -61,20 +72,6 @@ const AdminStudent = () => {
     }
   };
   
-  const handleDelete = async (studentId) => {
-    try {
-      const response = await axios.delete('http://localhost:3001/api/admin/student/delete-profile', {
-        data: { studentId }
-      });
-      setSuccessMessage(response.data.message);
-      setErrorMessage('');
-      // Fetch updated list of students
-      fetchStudents();
-    } catch (error) {
-      setSuccessMessage('');
-      setErrorMessage(error.response.data.message);
-    }
-  };
 
   const fetchStudents = async () => {
     try {
@@ -91,44 +88,44 @@ const AdminStudent = () => {
 
   return (
     <div className="student-container col-5">
-      <h2>Register Student</h2>
-      <form onSubmit={handleSubmit}>
-        {/* Form fields for registration */}
-        <div className="form-group">
-          <label htmlFor="name">Name:</label>
-          <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">Email:</label>
-          <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Password:</label>
-          <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} required />
-        </div>
-        <div className="form-group">
-          <label htmlFor="birthDate">Birth Date:</label>
-          <input type="date" id="birthDate" name="birthDate" value={formData.birthDate} onChange={handleChange} required />
-        </div>
-        <button type="submit">Register</button>
-      </form>
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
-      {successMessage && <div className="success-message">{successMessage}</div>}
+    <h2>Register Student</h2>
+    <form onSubmit={handleSubmit}>
+      {/* Form fields for registration */}
+      <div className="form-group">
+        <label htmlFor="name">Name:</label>
+        <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />
+      </div>
+      <div className="form-group">
+        <label htmlFor="email">Email:</label>
+        <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
+      </div>
+      <div className="form-group">
+        <label htmlFor="password">Password:</label>
+        <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} required />
+      </div>
+      <div className="form-group">
+        <label htmlFor="birthDate">Birth Date:</label>
+        <input type="date" id="birthDate" name="birthDate" value={formData.birthDate} onChange={handleChange} required />
+      </div>
+      <button type="submit">Register</button>
+    </form>
+    {errorMessage && <div className="error-message">{errorMessage}</div>}
+    {successMessage && <div className="success-message">{successMessage}</div>}
 
-      <h2>All Students</h2>
-      {error && <div className="error-message">{error}</div>}
-      <ul>
-        {students.map(student => (
-          <li key={student._id}>
-            <div>Name: {student.name}</div>
-            <div>Email: {student.email}</div>
-            <div>Birth Date: {student.birthDate}</div>
-            <button onClick={() => handleUpdate(student._id, formData)}>Update</button>
-            <button onClick={() => handleDelete(student._id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <h2>All Students</h2>
+    {error && <div className="error-message">{error}</div>}
+    <ul>
+      {students.map(student => (
+        <li key={student._id}>
+          <div>Name: {student.name}</div>
+          <div>Email: {student.email}</div>
+          <div>Birth Date: {student.birthDate}</div>
+
+          <button onClick={() => handleDelete(student._id)}>Delete</button>
+        </li>
+      ))}
+    </ul>
+  </div>
   );
 };
 

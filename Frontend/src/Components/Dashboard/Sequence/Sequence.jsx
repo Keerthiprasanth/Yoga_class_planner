@@ -1,11 +1,11 @@
-// Sequence.js
+// src/components/Sequence.js
 
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
-import './Sequenc.css'
+import './Sequenc.css';
 import HeaderComponent from "../Header/Header";
 
-const Sequence = ({ handleAddToBox }) => { // Receive handleAddToBox function as prop
+const Sequence = ({ handleAddToBox }) => {
   const [asanas, setAsanas] = useState([]);
   const [visibleAsanas, setVisibleAsanas] = useState(3); 
   const [searchQuery, setSearchQuery] = useState('');
@@ -25,16 +25,16 @@ const Sequence = ({ handleAddToBox }) => { // Receive handleAddToBox function as
     setVisibleAsanas(prev => prev + 3);
   }
 
-  const handleAddAsana = (asanaIds) => {
-    setSelectedAsanas(prev => [...prev, asanaIds]);
+  const handleAddAsana = (asana) => {
+    setSelectedAsanas(prev => [...prev, asana]);
   };
 
-  const handleRemoveAsana = (asanaIds) => {
-    setSelectedAsanas(prev => prev.filter(id => id !== asanaIds));
+  const handleRemoveAsana = (asanaId) => {
+    setSelectedAsanas(prev => prev.filter(asana => asana._id !== asanaId));
   };
 
   const handleSave = () => {
-    handleAddToBox(selectedAsanas); 
+    handleAddToBox(selectedAsanas.map(asana => asana._id)); 
   };
 
   const filteredAsanas = asanas.filter(asana => 
@@ -52,7 +52,7 @@ const Sequence = ({ handleAddToBox }) => { // Receive handleAddToBox function as
       />
       <br></br>
       <div className="image-box">
-        {filteredAsanas.slice(0, visibleAsanas).map((asana, index) => (
+        {filteredAsanas.slice(0, visibleAsanas).map((asana) => (
           <div className="col-md-4 mb-4" key={asana._id}>
             <div className="card">
               <img src={asana.image} className="card-img-top" alt={asana.name} />
@@ -66,10 +66,10 @@ const Sequence = ({ handleAddToBox }) => { // Receive handleAddToBox function as
                     ))}
                   </ul>
                 )}
-                {selectedAsanas.includes(asana._id) ? (
+                {selectedAsanas.some(selected => selected._id === asana._id) ? (
                   <button className="btn btn-danger" onClick={() => handleRemoveAsana(asana._id)}>Remove</button>
                 ) : (
-                  <button className="btn btn-success" onClick={() => handleAddAsana(asana._id)}>Add</button>
+                  <button className="btn btn-success" onClick={() => handleAddAsana(asana)}>Add</button>
                 )}
               </div>
             </div>
@@ -77,14 +77,23 @@ const Sequence = ({ handleAddToBox }) => { // Receive handleAddToBox function as
         ))}
         <div className="text-center">
           {visibleAsanas < filteredAsanas.length && (
-            <button className="btn btn-primary col-12 my-3" onClick={loadMore}>Load More</button>
+            <button className="btn btn-primary col-12 my-3" onClick={loadMore}>Load</button>
           )}
           {selectedAsanas.length > 0 && (
             <button className="btn btn-info col-12" onClick={handleSave}>Save</button>
           )}
         </div>
-       
       </div>
+      {selectedAsanas.length > 0 && (
+        <div className="selected-asanas">
+          <h4>Selected Asanas</h4>
+          <ul>
+            {selectedAsanas.map(asana => (
+              <li key={asana._id}>{asana.name}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

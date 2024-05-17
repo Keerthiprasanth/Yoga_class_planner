@@ -18,6 +18,7 @@ import Forms from './Components/Studnet-Dashboard/Forms/Forms.jsx';
 import AdminDashboard from './Components/Admin/AdminDashboard.jsx';
 import StudentSequence from './Components/Studnet-Dashboard/StudentClassesJoined/SrudentForms.jsx';
 import StudentSettings from './Components/Studnet-Dashboard/Header/StudentSettings.jsx';
+import AdminLogin from './Components/Admin/AdminStudent/AdminLogin.jsx';
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
 }></Route>
 <Route path='/student-settings' element={<StudentSettings></StudentSettings>}></Route>
 <Route path='/AdminDashboard' element={<AdminDashboard></AdminDashboard>}></Route>
+<Route path='/adminLogin' element={<AdminLogin></AdminLogin>}></Route>
 <Route path='/sugesstion' element={<StudentSequence></StudentSequence>}></Route>
 
                   </Routes>

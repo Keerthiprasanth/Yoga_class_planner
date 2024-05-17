@@ -34,7 +34,7 @@ const Forms = () => {
         };
         const response = await axios.get('http://localhost:3001/api/form/student-forms', { headers });
         if (response.data.forms.length > 0) {
-          setFormData(response.data.forms[0]); // Assuming there's only one form, you might need to handle multiple forms differently
+          setFormData(response.data.forms[0]); 
         }
       } catch (error) {
         console.error('Error fetching form data:', error);
@@ -42,7 +42,7 @@ const Forms = () => {
     };
 
     fetchData();
-  }, []); // Empty dependency array means this effect will only run once, when the component mounts
+  }, []);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
