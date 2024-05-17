@@ -183,7 +183,7 @@ router.post("/request-password-reset", async (req, res) => {
       from: "zenflowyogamedia@gmail.com",
       to: student.email,
       subject: "Password Reset Request",
-      text: `You requested a password reset. Click the link to reset your password: http://your-app-url/reset-password/${token}`
+      text: `You requested a password reset. Click the link to reset your password: http://localhost:3000/student/reset-password/${token}`
     };
 
     await transporter.sendMail(mailOptions);

@@ -18,6 +18,10 @@ import Forms from './Components/Studnet-Dashboard/Forms/Forms.jsx';
 import AdminDashboard from './Components/Admin/AdminDashboard.jsx';
 import StudentSequence from './Components/Studnet-Dashboard/StudentClassesJoined/SrudentForms.jsx';
 import StudentSettings from './Components/Studnet-Dashboard/Header/StudentSettings.jsx';
+import ForgotPassword from './Components/Authentications/student/LoginComponent/Forgot-Password';
+import ResetPassword from './Components/Authentications/student/LoginComponent/Reset-Password';
+import TeacherForgotPassword from './Components/Authentications/Teacher/LoginComponent/Forgot-Password';
+import TeacherResetPassword from './Components/Authentications/Teacher/LoginComponent/Reset-Password';
 
 function App() {
   return (
@@ -27,8 +31,12 @@ function App() {
       <Route path="/" element = { <RedirectComponent></RedirectComponent>}></Route>
       <Route path="/teacher-signup" element = {<TeacherSignupComponent></TeacherSignupComponent>}> </Route>
       <Route path='/teacher-login' element ={<LoginCompoenent></LoginCompoenent>}></Route>
+      <Route path='/teacher/forgot-password' element={<TeacherForgotPassword></TeacherForgotPassword>} ></Route>
+      <Route path='/teacher/reset-password/:token' element = {<TeacherResetPassword></TeacherResetPassword>}></Route>
       <Route path='/student-signup' element = {<StudentSignupComponent></StudentSignupComponent>}></Route>
       <Route path='/student-login' element = {<StudentLoginComponent></StudentLoginComponent>}></Route>
+      <Route path='/forgot-password' element={<ForgotPassword></ForgotPassword>} ></Route>
+      <Route path='/student/reset-password/:token' element = {<ResetPassword></ResetPassword>}></Route>
       <Route path='/dashboard' element={<DashboardComponent></DashboardComponent>} ></Route>
       <Route path='/student-dashboard' element={<StudentDashboard></StudentDashboard>}></Route>
       <Route path='/teacher-settings' element={<TeacherSettings></TeacherSettings>}></Route>

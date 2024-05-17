@@ -72,6 +72,7 @@ const Login = () => {
             </button>
           </div>
           <span>New user? <a href="/teacher-signup">Register</a> here</span>
+          <span><a href="/teacher/forgot-password">Forgot Password?</a></span>
           <button type="submit" className="login-button">Submit</button>
         </form>
       </div>

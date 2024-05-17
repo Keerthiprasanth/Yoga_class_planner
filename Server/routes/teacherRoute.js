@@ -154,6 +154,7 @@ router.get("/teacher-list", async (req, res) => {
 router.post("/request-password-reset", async (req, res) => {
   try {
     const { email } = req.body;
+    console.log(email);
     const teacher = await Teacher.findOne({ email });
 
     if (!teacher) {
@@ -182,7 +183,7 @@ router.post("/request-password-reset", async (req, res) => {
       from: "zenflowyogamedia@gmail.com",
       to: teacher.email,
       subject: "Password Reset Request",
-      text: `You requested a password reset. Click the link to reset your password: http://your-app-url/reset-password/${token}`
+      text: `You requested a password reset. Click the link to reset your password: http://localhost:3000/teacher/reset-password/${token}`
     };
 
     await transporter.sendMail(mailOptions);
@@ -197,7 +198,7 @@ router.post("/reset-password", async (req, res) => {
   try {
     const { token, newPassword } = req.body;
 
-    const teacher = await Student.findOne({
+    const teacher = await Teacher.findOne({
       passwordResetToken: token,
       passwordResetTokenExpiry: { $gt: Date.now() }
     });
