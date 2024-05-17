@@ -22,6 +22,7 @@ import ForgotPassword from './Components/Authentications/student/LoginComponent/
 import ResetPassword from './Components/Authentications/student/LoginComponent/Reset-Password';
 import TeacherForgotPassword from './Components/Authentications/Teacher/LoginComponent/Forgot-Password';
 import TeacherResetPassword from './Components/Authentications/Teacher/LoginComponent/Reset-Password';
+import AdminLogin from './Components/Admin/AdminStudent/AdminLogin.jsx';
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
 }></Route>
 <Route path='/student-settings' element={<StudentSettings></StudentSettings>}></Route>
 <Route path='/AdminDashboard' element={<AdminDashboard></AdminDashboard>}></Route>
+<Route path='/adminLogin' element={<AdminLogin></AdminLogin>}></Route>
 <Route path='/sugesstion' element={<StudentSequence></StudentSequence>}></Route>
 
                   </Routes>

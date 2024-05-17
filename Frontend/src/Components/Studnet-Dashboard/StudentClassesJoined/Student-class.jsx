@@ -20,7 +20,7 @@ const StudentClasses = () => {
       } catch (error) {
         console.error('Error fetching classes:', error);
       }
-    };  
+    };
 
     fetchClasses();
   }, []);
@@ -47,20 +47,11 @@ const StudentClasses = () => {
     }
   };
 
-  const handleWithdrawClick = async (classId) => {
-    try {
-      const token = sessionStorage.getItem('token');
-      await axios.delete(`http://localhost:3001/api/class/withdraw-class/${classId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      // Remove the withdrawn class from the state
-      setClasses(classes.filter(classItem => classItem._id !== classId));
-    } catch (error) {
-      console.error('Error withdrawing class:', error);
-    }
+  const handleDeleteCancel = () => {
+    setShowDeleteModal(false);
+    setClassToDelete(null);
   };
+
   return (
     <div className='mt-3 col-12'>
       <h1>My Classes</h1>
@@ -74,10 +65,27 @@ const StudentClasses = () => {
             <p>Duration: {classItem.duration} minutes</p>
             <p>Max Capacity: {classItem.maxCapacity}</p>
             <p>Venue: {classItem.venue}</p>
-            <Button variant="danger" onClick={() => handleWithdrawClick(classItem._id)}>Withdraw</Button>
+            <Button variant="danger" onClick={() => handleDeleteClick(classItem._id)}>Withdraw</Button>
           </div>
         ))}
       </div>
+
+      <Modal show={showDeleteModal} onHide={handleDeleteCancel}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Withdrawal</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to withdraw from this class?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleDeleteCancel}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={handleDeleteConfirm}>
+            Yes, Withdraw
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

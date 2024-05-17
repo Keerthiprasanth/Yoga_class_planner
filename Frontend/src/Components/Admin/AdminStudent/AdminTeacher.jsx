@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Modal from 'react-bootstrap/Modal'; 
 import Button from 'react-bootstrap/Button';
+
 const AdminTeacher = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -12,8 +13,9 @@ const AdminTeacher = () => {
   });
 
   const [teachers, setTeachers] = useState([]);
-  const [error, setError] = useState(null); // State variable to store error message
-  const [showEditModal, setShowEditModal] = useState(false); // State variable to control the modal visibility
+  const [error, setError] = useState(null); 
+  const [showEditModal, setShowEditModal] = useState(false); 
+  const [currentTeacherId, setCurrentTeacherId] = useState(null); 
 
   useEffect(() => {
     fetchAllTeachers();
@@ -29,7 +31,7 @@ const AdminTeacher = () => {
       const response = await axios.get('http://localhost:3001/api/admin/all-teachers');
       setTeachers(response.data);
     } catch (error) {
-      setError('Error fetching teachers: ' + error.message); // Store the error message in state
+      setError('Error fetching teachers: ' + error.message);
     }
   };
 
@@ -43,25 +45,37 @@ const AdminTeacher = () => {
     }
   };
 
-  const handleUpdate = async (teacherId, teacherName) => {
+  const handleUpdate = (teacherId, teacherData) => {
+    setCurrentTeacherId(teacherId);
+    setFormData(teacherData);
+    setShowEditModal(true);
+  };
+
+  const handleEditConfirm = async () => {
     try {
-      // Set the formData state with the teacher's name
-      setFormData({ ...formData, name: teacherName });
-      // Open the edit modal
-      setShowEditModal(true);
+      const token = sessionStorage.getItem('token');
+      await axios.put(`http://localhost:3001/api/admin/teacher/update/${currentTeacherId}`, formData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      alert('Teacher updated successfully');
+      setShowEditModal(false);
+      fetchAllTeachers(); 
     } catch (error) {
-      setError('Error updating teacher details: ' + error.response.data.message);
+      setError('Error updating teacher: ' + error.response.data.message);
     }
   };
-  const handleEditConfirm = () => {
-    // Add your logic here for handling edit confirmation
-    setShowEditModal(false); // Close the modal after confirming
-  };
-  
 
   const handleDelete = async (teacherId) => {
     try {
-      await axios.delete(`http://localhost:3001/api/admin/teacher/delete-profile/${teacherId}`);
+      await axios.delete('http://localhost:3001/api/admin/teacher/delete-profile', {
+        data: { TeacherId: teacherId },
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
       alert('Teacher profile deleted successfully');
       fetchAllTeachers(); 
     } catch (error) {
@@ -81,7 +95,7 @@ const AdminTeacher = () => {
       <label>Birth Date:</label>
       <input type="date" name="birthDate" value={formData.birthDate} onChange={handleChange} /><br />
 
-      <button onClick={handleRegister}>Register Teacher</button> {/* Button for teacher registration */}
+      <button onClick={handleRegister}>Register Teacher</button>
       
       <h2>All Teachers</h2>
       <ul>
@@ -90,13 +104,12 @@ const AdminTeacher = () => {
             <div>Name: {teacher.name}</div>
             <div>Email: {teacher.email}</div>
             <div>Birth Date: {teacher.birthDate}</div>
-            <button onClick={() => handleUpdate(teacher._id, teacher.name)}>Update</button> {/* Button for updating teacher profile */}
-            <button onClick={() => handleDelete(teacher._id)}>Delete</button> {/* Button for deleting teacher profile */}
+
+            <button onClick={() => handleDelete(teacher._id)}>Delete</button>
           </li>
         ))}
       </ul>
 
-      {/* Edit Modal */}
       <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Teacher</Modal.Title>
@@ -104,6 +117,11 @@ const AdminTeacher = () => {
         <Modal.Body>
           <label>Name:</label>
           <input type="text" name="name" value={formData.name} onChange={handleChange} />
+          <label>Email:</label>
+          <input type="email" name="email" value={formData.email} onChange={handleChange} />
+          <label>Birth Date:</label>
+          <input type="date" name="birthDate" value={formData.birthDate} onChange={handleChange} />
+
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowEditModal(false)}>

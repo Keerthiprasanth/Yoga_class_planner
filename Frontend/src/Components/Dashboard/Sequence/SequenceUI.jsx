@@ -71,6 +71,7 @@ const SequenceUI = ({ studentId }) => {
         }
       });
       setSequenceIdsToSend([]); 
+      window.alert('Sequence suggested successfully!');
     } catch (error) {
       console.error('Error sending sequence to student:', error);
     }
@@ -116,7 +117,7 @@ const SequenceUI = ({ studentId }) => {
         <Modal.Header closeButton>
           <Modal.Title>Add Sequence</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{width:"150px"}}>
           <Sequence handleAddToBox={handleAddToBox} />
         </Modal.Body>
         <Modal.Footer>
