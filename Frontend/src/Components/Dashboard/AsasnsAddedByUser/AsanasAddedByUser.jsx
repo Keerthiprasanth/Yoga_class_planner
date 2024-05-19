@@ -56,32 +56,54 @@ const AsanasAddedByUser = () => {
   };
 
   const handleUpdateChange = (e) => {
-    setUpdateFormData({ ...updateFormData, [e.target.name]: e.target.value });
+    const { name, value, files } = e.target;
+    if (name === 'image' && files.length > 0) {
+      setUpdateFormData(prevState => ({
+        ...prevState,
+        [name]: files[0]
+      }));
+    } else {
+      setUpdateFormData(prevState => ({
+        ...prevState,
+        [name]: value
+      }));
+    }
   };
+  
+
 
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
     try {
       const token = sessionStorage.getItem('token');
-      const response = await axios.put(`http://localhost:3001/api/asana/update/${updateFormData.id}`, updateFormData, {
+      const formData = new FormData();
+      formData.append('name', updateFormData.name);
+      formData.append('description', updateFormData.description);
+      formData.append('benefits', updateFormData.benefits);
+      if (updateFormData.image) {
+        formData.append('image', updateFormData.image);
+      }
+      const response = await axios.put(`http://localhost:3001/api/asana/update/${updateFormData.id}`, formData, {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
         }
       });
-
+  
       const updatedAsanas = asanas.map(asana => {
         if (asana._id === updateFormData.id) {
           return response.data.asana;
         }
         return asana;
       });
-
+  
       setAsanas(updatedAsanas);
       setShowUpdateModal(false);
     } catch (error) {
       console.error('Error updating asana:', error);
     }
   };
+  
 
   const handleDeleteModal = (id) => {
     setAsanaToDelete(id);

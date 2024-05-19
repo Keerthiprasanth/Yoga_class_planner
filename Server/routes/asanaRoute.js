@@ -97,9 +97,10 @@ router.get("/view-asanas", async (req, res) => {
 router.put(
   "/update/:id",
   authenticateToken,
-  upload.array("image"),
+  upload.single("image"),
   async (req, res) => {
     try {
+      console.log(req.body);
       const asanaId = req.params.id;
 
       let asana = await Asana.findById(asanaId);
@@ -117,23 +118,19 @@ router.put(
       if (req.body.benefits) {
         asana.benefits = req.body.benefits;
       }
-      if (req.files && req.files.length > 0) {
-        const uploadResults = await Promise.all(
-          req.files.map(async (file) => {
-            const uploadParams = {
-              Bucket: process.env.S3_BUCKET_NAME,
-              Key: `${asana.addedById}/${Date.now()}-${file.originalname}`,
-              Body: file.buffer,
-              ACL: "public-read",
-              ContentType: file.mimetype,
-            };
+      if (req.file) { // Check if file exists in request
+        const uploadParams = {
+          Bucket: process.env.S3_BUCKET_NAME,
+          Key: `${asana.addedById}/${Date.now()}-${req.file.originalname}`,
+          Body: req.file.buffer,
+          ACL: "public-read",
+          ContentType: req.file.mimetype,
+        };
 
-            return await s3.upload(uploadParams).promise();
-          })
-        );
-
-        asana.image.push(...uploadResults.map(result => result.Location));
+        const uploadResult = await s3.upload(uploadParams).promise();
+        asana.image = [uploadResult.Location]; // Update image with the new URL
       }
+      
       if (req.body.deletedImages && req.body.deletedImages.length > 0) {
         asana.image = asana.image.filter(image => !req.body.deletedImages.includes(image));
       }
