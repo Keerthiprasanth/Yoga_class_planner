@@ -118,7 +118,7 @@ router.put(
       if (req.body.benefits) {
         asana.benefits = req.body.benefits;
       }
-      if (req.file) { // Check if file exists in request
+      if (req.file) { 
         const uploadParams = {
           Bucket: process.env.S3_BUCKET_NAME,
           Key: `${asana.addedById}/${Date.now()}-${req.file.originalname}`,
@@ -128,9 +128,9 @@ router.put(
         };
 
         const uploadResult = await s3.upload(uploadParams).promise();
-        asana.image = [uploadResult.Location]; // Update image with the new URL
+        asana.image = [uploadResult.Location]; 
       }
-      
+
       if (req.body.deletedImages && req.body.deletedImages.length > 0) {
         asana.image = asana.image.filter(image => !req.body.deletedImages.includes(image));
       }
